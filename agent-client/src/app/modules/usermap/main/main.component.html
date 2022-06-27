@@ -1,1 +1,15 @@
-<p>main works!</p>
+<div class="map-wrapper">
+  <agm-map
+    [latitude]="lat"
+    [longitude]="lng"
+    [disableDefaultUI]="true"
+    [zoom]="18"
+    [tilt]="45"
+  >
+    <agm-marker
+      [latitude]="lat"
+      [longitude]="lng"
+      [iconUrl]="iconUrl"
+    ></agm-marker>
+  </agm-map>
+</div>

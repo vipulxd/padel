@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { UserprofileRoutingModule } from './userprofile-routing.module';
-import { MainComponent } from './main/main.component';
+
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
   declarations: [
-    MainComponent
+    ProfileComponent
   ],
   imports: [
     CommonModule,
