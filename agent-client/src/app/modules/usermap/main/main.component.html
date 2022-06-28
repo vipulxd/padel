@@ -7,9 +7,18 @@
     [tilt]="45"
   >
     <agm-marker
-      [latitude]="lat"
-      [longitude]="lng"
-      [iconUrl]="iconUrl"
+      *ngFor="let coordinate of coords; let i = index"
+      [latitude]="coordinate[0].lat"
+      [longitude]="coordinate[1].lng"
+      [agmFitBounds]="true"
     ></agm-marker>
+    <agm-polyline [visible]="true" [strokeWeight]="3" [strokeColor]="'#07b57a'">
+      <agm-polyline-point
+        *ngFor="let coordinate of coords; let i = index"
+        [latitude]="coordinate[0].lat"
+        [longitude]="coordinate[0].lng"
+      >
+      </agm-polyline-point>
+    </agm-polyline>
   </agm-map>
 </div>
