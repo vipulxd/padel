@@ -1,0 +1,48 @@
+.profile-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	min-height: 80vh;
+	text-align: center;
+
+
+	:first-child {
+		flex: 2;
+
+	}
+
+	:nth-last-child(4) {
+		flex: 1;
+		border-top-left-radius: 23px;
+		border-top-right-radius: 23px;
+		background: white;
+		color: black;
+		padding: 10px;
+		margin-top: -19px;
+	}
+
+	:nth-last-child(0) {
+		padding: 10px;
+		flex: 1
+	}
+}
+
+.profile-wrapper {
+
+
+	img {
+		height: 100%;
+		width: 100%;
+
+	}
+}
+
+.profile-name {
+	font-size: xx-large;
+	font-weight: 800;
+}
+
+.profile-id {
+	font-size: small;
+	font-weight: 500;
+}

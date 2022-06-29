@@ -31,6 +31,7 @@
     "@angular-devkit/build-angular": "~13.3.6",
     "@angular/cli": "~13.3.6",
     "@angular/compiler-cli": "~13.3.0",
+    "@capacitor/cli": "latest",
     "@types/googlemaps": "^3.39.12",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
@@ -40,7 +41,6 @@
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "typescript": "~4.6.2",
-    "@capacitor/cli": "latest"
+    "typescript": "~4.6.2"
   }
 }

@@ -1,25 +1,32 @@
 <div class="map-wrapper">
-    <div class="permission-btn-wrapper">
-      <div  *ngIf="!updatingLocation">  <button class="btn-home" (click)="requestLocationUpdate()">START</button></div>
-     <div  *ngIf="updatingLocation" >   <button class="btn-home"(click)="requestStopLocationUpdates()">STOP</button></div>
+  <div class="permission-btn-wrapper">
+    <div *ngIf="!updatingLocation">
+      <button class="btn-home" (click)="requestLocationUpdate()">START</button>
     </div>
+    <div *ngIf="updatingLocation">
+      <button class="btn-home" (click)="requestStopLocationUpdates()">
+        STOP
+      </button>
+    </div>
+  </div>
 
   <agm-map
-    [latitude]="coords[coords.length- 1].lat"
+    [latitude]="coords[coords.length - 1].lat"
     [longitude]="coords[coords.length - 1].lng"
     [disableDefaultUI]="true"
-    [zoom]="18"
-    [tilt]="45"
+    [zoom]="17"
+    [usePanning]="true"
+    [tilt]="50"
   >
+    >
     <agm-marker
-
       *ngFor="let coordinate of coords; let i = index"
       [latitude]="coordinate.lat"
       [longitude]="coordinate.lng"
       [agmFitBounds]="true"
       [iconUrl]="$any(icon)"
     ></agm-marker>
-    <agm-polyline [visible]="true" [strokeWeight]="7" [strokeColor]="'black'">
+    <agm-polyline [visible]="true" [strokeWeight]="3" [strokeColor]="'black'">
       <agm-polyline-point
         *ngFor="let coordinate of coords; let i = index"
         [latitude]="coordinate.lat"
