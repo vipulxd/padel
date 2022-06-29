@@ -1,7 +1,7 @@
 <div class="map-wrapper">
     <div class="permission-btn-wrapper">
-      <div>  <button class="btn-home" (click)="requestLocationUpdate()">START</button></div>
-     <div>   <button class="btn-home" (click)="requestStopLocationUpdates()">STOP</button></div>
+      <div  *ngIf="!updatingLocation">  <button class="btn-home" (click)="requestLocationUpdate()">START</button></div>
+     <div  *ngIf="updatingLocation" >   <button class="btn-home"(click)="requestStopLocationUpdates()">STOP</button></div>
     </div>
 
   <agm-map
@@ -12,6 +12,7 @@
     [tilt]="45"
   >
     <agm-marker
+
       *ngFor="let coordinate of coords; let i = index"
       [latitude]="coordinate.lat"
       [longitude]="coordinate.lng"

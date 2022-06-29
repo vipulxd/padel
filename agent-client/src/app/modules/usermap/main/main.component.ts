@@ -6,48 +6,28 @@ import {LOCATION, LocationService} from 'src/app/services/location.service';
     templateUrl: './main.component.html',
     styleUrls: ['./main.component.scss'],
 })
-export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MainComponent implements OnInit, AfterViewInit {
     public coords: [LOCATION] = [{lat: 0, lng: 0}];
-    public mockdata : LOCATION[] = [
-        {
-            lat: 28.62980871695189,
-            lng: 77.38009929656982
-        },
-        {
-            lat: 28.629846385193826,
-            lng: 77.37936973571779
-        },
-        {
-            lat: 28.629921721637164,
-            lng: 77.37868309020998
-        },
-        {
-            lat: 28.629997058026408,
-            lng: 77.37786769866945
-        },
-        {
-            lat: 28.629997058026408,
-            lng: 77.37700939178468
-        }
-    ]
+    public updatingLocation : boolean = false
 
     constructor(private locationService: LocationService) {
     }
 
-    icon = {
-        scaledSize: {
-            width: 50,
-            height: 50
-        }, url: './../../assets/icons/cycle.svg'
+    public icon = {
+
+            scaledSize: {
+                width: 50,
+                height: 50
+            }, url: './../../assets/icons/location.svg'
+
     }
-
     ngOnInit(): void {
-        if (this.coords[0].lat == 0) {
-            // remove redundant locations on component mount
-            this.coords.pop()
-            this.coords.push(this.locationService.internalLocationInfo)
-        }
-
+        /**
+         * set loader
+         */
+        /**
+         * start continuous locations watch
+         */
         this.locationService.coordinates.subscribe((val: LOCATION) => {
             if (val.lat !== this.coords[this.coords.length - 1].lat) {
                 if (this.coords[0].lat == 0) {
@@ -56,17 +36,21 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.coords.push(val);
             }
         });
+        /**
+         * Request for a single location update
+         */
+        this.locationService.getCurrentLocation()
     }
     public requestLocationUpdate(){
+        this.updatingLocation = true
         this.locationService.startLocationTracking();
     }
     public requestStopLocationUpdates(){
+        this.updatingLocation = false;
         this.locationService.stopLocationTracking();
     }
     ngAfterViewInit(): void {
+        this.locationService.getCurrentLocation()
     }
 
-    ngOnDestroy(): void {
-        this.coords = [{lat: 0, lng: 0}]
-    }
 }

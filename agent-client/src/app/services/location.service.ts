@@ -1,5 +1,5 @@
 import {Injectable, EventEmitter} from '@angular/core';
-import {Subscription, interval} from 'rxjs';
+import {Subscription, interval, Observable} from 'rxjs';
 import {Geolocation, Position} from '@capacitor/geolocation';
 
 @Injectable({
@@ -7,6 +7,7 @@ import {Geolocation, Position} from '@capacitor/geolocation';
 })
 export class LocationService {
     public isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
+    // location callback id
     public id: any;
     coordinates: EventEmitter<LOCATION> = new EventEmitter<LOCATION>();
     // current valid location fetched
@@ -21,10 +22,8 @@ export class LocationService {
     }
 
     async getPosition() {
-        this.isLoading.emit(true)
         this.id = Geolocation.watchPosition({}, (pos: Position | null, err) => {
             if (pos) {
-                this.isLoading.emit(false)
                 this.currentLocationInfo = {
                     lat: pos.coords.latitude,
                     lng: pos.coords.longitude,
@@ -45,7 +44,19 @@ export class LocationService {
         })
 
     }
-
+public getCurrentLocation(){
+this.isLoading.emit(true)
+        Geolocation.getCurrentPosition()
+            .then(pos =>{
+                this.isLoading.emit(false)
+             this.coordinates.emit({lat:pos.coords.latitude,lng:pos.coords.longitude})
+            })
+            .catch(
+                err=>{
+                    return {lat:0,lng:0}
+                }
+            )
+}
     distance(lat1: number, lon1: number, lat2: number, lon2: number) {
         if ((lat1 == lat2) && (lon1 == lon2)) {
             return 0;
