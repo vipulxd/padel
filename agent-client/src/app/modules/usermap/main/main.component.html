@@ -21,18 +21,11 @@
     >
     <agm-marker
       *ngFor="let coordinate of coords; let i = index"
-      [latitude]="coordinate.lat"
-      [longitude]="coordinate.lng"
+      [latitude]="coordinate[coords.length -1].lat"
+      [longitude]="coordinate[coords.length -1].lng"
       [agmFitBounds]="true"
       [iconUrl]="$any(icon)"
     ></agm-marker>
-    <agm-polyline [visible]="true" [strokeWeight]="3" [strokeColor]="'black'">
-      <agm-polyline-point
-        *ngFor="let coordinate of coords; let i = index"
-        [latitude]="coordinate.lat"
-        [longitude]="coordinate.lng"
-      >
-      </agm-polyline-point>
-    </agm-polyline>
+
   </agm-map>
 </div>

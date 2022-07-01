@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { LoaderComponent } from './shared/loader/loader.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { LoaderComponent } from './shared/loader/loader.component';
   ],
   imports: [
     BrowserModule,
+      HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey : 'AIzaSyDIbr4Jz-08WdE1GyCJ6m-QmfD2QP83vkk'
     }),

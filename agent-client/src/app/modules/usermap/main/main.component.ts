@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { LOCATION, LocationService } from 'src/app/services/location.service';
+import { LocationService } from 'src/app/services/location.service';
+import {LOCATIONINFO} from "../../../services/api.service";
 
 @Component({
   selector: 'app-main',
@@ -7,7 +8,7 @@ import { LOCATION, LocationService } from 'src/app/services/location.service';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit, AfterViewInit {
-  public coords: [LOCATION] = [{ lat: 0, lng: 0 }];
+  public coords: LOCATIONINFO = {lat : 0,lng:0, acc:0,createdAt:''} ;
   public updatingLocation: boolean = false;
 
   constructor(private locationService: LocationService) {}
@@ -26,11 +27,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     /**
      * start continuous locations watch
      */
-    this.locationService.coordinates.subscribe((val: LOCATION) => {
-      if (this.coords[0].lat == 0) {
-        this.coords.pop();
-      }
-      this.coords.push(val);
+    this.locationService.coordinates.subscribe((val: LOCATIONINFO) => {
+     this.coords = val
     });
     /**
      * Request for a single location update
