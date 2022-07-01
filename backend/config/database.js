@@ -1,4 +1,4 @@
-const pg = require("pg");
+const {Pool} = require("pg");
 
 const pg = new Pool({
   user: process.env.POSTGRES_user,

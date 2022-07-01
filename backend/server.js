@@ -8,6 +8,7 @@ app.use(express.json());
 app.get("/", (r, s) => {
   s.send("RestAPI server for padel");
 });
+app.use('/api/location',require('./route/locations') )
 // server config
 app.listen(port, () => {
   `Server is live on port ${port}`;
