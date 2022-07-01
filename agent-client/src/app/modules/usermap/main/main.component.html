@@ -11,8 +11,8 @@
   </div>
 
   <agm-map
-    [latitude]="coords[coords.length - 1].lat"
-    [longitude]="coords[coords.length - 1].lng"
+    [latitude]="coords.lat"
+    [longitude]="coords.lng"
     [disableDefaultUI]="true"
     [zoom]="17"
     [usePanning]="true"
@@ -20,9 +20,8 @@
   >
     >
     <agm-marker
-      *ngFor="let coordinate of coords; let i = index"
-      [latitude]="coordinate[coords.length -1].lat"
-      [longitude]="coordinate[coords.length -1].lng"
+      [latitude]="coords.lat"
+      [longitude]="coords.lng"
       [agmFitBounds]="true"
       [iconUrl]="$any(icon)"
     ></agm-marker>

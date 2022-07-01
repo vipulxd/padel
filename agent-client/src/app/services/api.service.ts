@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpClientModule,} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 
 
@@ -16,10 +16,8 @@ export class ApiService {
 
     public sendLocationToServer(coordinates: LOCATIONINFO) {
         JSON.stringify(coordinates)
-        this._http.post(this.url, coordinates).subscribe((res: any) => {
-            console.log("locations is sent")
-        }, (e) => {
-            console.error('location cannot be sent to server')
+        this._http.request("POST",this.url, { body:coordinates}).subscribe((val)=>{
+            console.log(`Location ${val} is being sent to server`)
         })
     }
 }

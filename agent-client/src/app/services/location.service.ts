@@ -32,14 +32,14 @@ export class LocationService {
                     acc: pos.coords.accuracy,
                     createdAt: pos.timestamp.toString()
                 };
+                this.coordinates.emit(this.currentLocationInfo);
                 if (this.previousLocationInfo) {
                     /**
                      * If location from GPS is > 50 acc. discard
                      */
                     this.internalLocationInfo = this.currentLocationInfo;
-
+console.log(`location ${pos.coords} with time stamp ${pos.timestamp}`)
                     if (this.previousLocationInfo != this.currentLocationInfo) {
-                        this.coordinates.emit(this.currentLocationInfo);
                         var distanceFromPrevious = this.distance(
                             this.previousLocationInfo.lat,
                             this.previousLocationInfo.lng,
@@ -75,6 +75,12 @@ export class LocationService {
         this.isLoading.emit(true);
         Geolocation.getCurrentPosition()
             .then((pos) => {
+                this.currentLocationInfo = {
+                    lat: pos.coords.latitude,
+                    lng: pos.coords.longitude,
+                    acc: pos.coords.accuracy,
+                    createdAt: pos.timestamp.toString()
+                };
                 this.isLoading.emit(false);
                 this.coordinates.emit({
                     lat: pos.coords.latitude,
@@ -82,6 +88,7 @@ export class LocationService {
                     acc: pos.coords.accuracy,
                     createdAt: pos.timestamp.toString()
                 });
+                this.previousLocationInfo = this.currentLocationInfo
             })
             .catch((err) => {
                 return {lat: 0, lng: 0};
@@ -105,7 +112,8 @@ export class LocationService {
             dist = Math.acos(dist);
             dist = (dist * 180) / Math.PI;
             dist = dist * 60 * 1.1515;
-            dist = dist * 0.8684;
+            dist = dist * 0.8684 ;
+            dist = dist * 1000
         }
 
         return dist;
