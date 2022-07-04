@@ -18,7 +18,7 @@ export class MainComponent implements OnInit, AfterViewInit {
       width: 50,
       height: 50,
     },
-    url: './../../assets/icons/location.svg',
+    url: './../../assets/icons/locationMarker.svg',
   };
   ngOnInit(): void {
     /**
