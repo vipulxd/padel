@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>padel required user location even while the app is running in background. Please select &quot;Allow always&quot;</string>
+	<string>Padel requires user&apos;s location even while running in the background . Please select &quot;Change to always allow&quot;</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

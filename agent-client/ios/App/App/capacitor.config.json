@@ -2,10 +2,5 @@
 	"appId": "com.padel.app",
 	"appName": "agent-client",
 	"webDir": "www",
-	"bundledWebRuntime": false,
-	"server": {
-		"allowNavigation": [
-			"capacitor://padel-config-api0server.herokuapp.com/api/location/1"
-		]
-	}
+	"bundledWebRuntime": false
 }

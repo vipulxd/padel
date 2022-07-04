@@ -2,8 +2,9 @@ import UIKit
 import Capacitor
 import CoreLocation
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegate {
 
+    
     var window: UIWindow?
     var locationManager : CLLocationManager!
     
@@ -22,12 +23,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if CLLocationManager.locationServicesEnabled(){
             locationManager.requestAlwaysAuthorization()
         }
+        locationManager?.startUpdatingLocation()
+        locationManager?.delegate = self
+        locationManager?.allowsBackgroundLocationUpdates = true
+        locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
-
+    func stopLocationManagerFromSendingLocationUpdate(){
+        locationManager?.stopUpdatingLocation()
+    }
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        stopLocationManagerFromSendingLocationUpdate()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -43,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // but if you want the App API to support tracking app url opens, make sure to keep this call
         return ApplicationDelegateProxy.shared.application(app, open: url, options: options)
     }
+    
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         // Called when the app was launched with an activity, including Universal Links.
