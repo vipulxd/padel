@@ -34,10 +34,10 @@ export class LocationService {
                     acc: pos.coords.accuracy,
                     createdAt: pos.timestamp.toString()
                 };
-
                 if (this.previousLocationInfo) {
+
                     /**
-                     * If location from GPS is > 50 acc. discard
+                     * If location from GPS is > 35 acc. discard
                      */
                     this.internalLocationInfo = this.currentLocationInfo;
                     this.coordinates.emit(this.currentLocationInfo);
@@ -51,7 +51,7 @@ export class LocationService {
                         );
 
                         if (distanceFromPrevious >= 60) {
-                            if (pos.coords.accuracy < 60) {
+                            if (pos.coords.accuracy < 35) {
                                 this._api.sendLocationToServer(this.currentLocationInfo)
                                 this.previousLocationInfo = this.currentLocationInfo;
                             }
@@ -61,9 +61,9 @@ export class LocationService {
                             );
                         }
                     }
+                }else {
+                    this.sendInitialLocationToServer(this.currentLocationInfo)
                 }
-            } else {
-                this.sendInitialLocationToServer(this.currentLocationInfo)
             }
         });
 
@@ -91,9 +91,8 @@ export class LocationService {
                     acc: pos.coords.accuracy,
                     createdAt: pos.timestamp.toString()
                 });
-                this.previousLocationInfo = this.currentLocationInfo
             })
-            .catch((err) => {
+            .catch(() => {
                 return {lat: 0, lng: 0};
             });
     }
@@ -143,7 +142,6 @@ export class LocationService {
     }
 
     public stopRealTimeLocationUpdates(): void {
-        this.isUpdatingLocation = false;
         this.loggerSubscriber.unsubscribe()
     }
 
