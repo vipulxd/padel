@@ -55,11 +55,11 @@ export class MainComponent implements OnInit, AfterViewInit {
       if (this.coords[this.coords.length - 1].acc < 10) {
           return 20
       } else if (this.coords[this.coords.length - 1].acc < 20) {
-          return 15
+          return 18
       } else if (this.coords[this.coords.length - 1].acc < 30) {
-          return 12
+          return 14
       } else {
-          return 10
+          return 13
       }
   }
   ngAfterViewInit(): void {

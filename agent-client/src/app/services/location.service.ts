@@ -51,10 +51,9 @@ export class LocationService {
                         );
 
                         if (distanceFromPrevious >= 60) {
-                            if (pos.coords.accuracy < 40) {
+                            if (pos.coords.accuracy < 60) {
                                 this._api.sendLocationToServer(this.currentLocationInfo)
                                 this.previousLocationInfo = this.currentLocationInfo;
-
                             }
                         } else {
                             console.log(
@@ -123,10 +122,10 @@ export class LocationService {
             dist = Math.acos(dist);
             dist = (dist * 180) / Math.PI;
             dist = dist * 60 * 1.1515;
-            dist = dist * 0.8684;
+            dist = dist * 0.8684
             dist = dist * 1000
         }
-
+       console.log(dist)
         return dist;
     }
 
