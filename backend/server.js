@@ -10,7 +10,18 @@ app.use(express.json());
 app.get("/", (r, s) => {
   s.send("RestAPI server for padel");
 });
-app.use('/api/location',require('./route/locations') )
+/**
+ * AUTHENTICATION ROUTES
+ */
+app.use('/api/authenticate',require('./route/account'))
+/**
+ * AGENT ROUTES
+ */
+app.use('/api/agent',require('./route/agent') )
+/**
+ * ADMIN ROUTES
+ */
+app.use('/api/admin',require('./route/admin'))
 // server config
 app.listen(port, () => {
   `Server is live on port ${port}`;
