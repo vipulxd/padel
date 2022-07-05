@@ -6,7 +6,7 @@ const router = app.Router()
 /**
  * user's based api request handler
  */
-router.route('/test')
+router.route('/testlocation')
     .get(verifyAdminToken,(req,res)=>{
         res.send("ok")
     })
