@@ -10,10 +10,7 @@ app.use(express.json());
 app.get("/", (r, s) => {
   s.send("RestAPI server for padel");
 });
-/**
- * AUTHENTICATION ROUTES
- */
-app.use('/api/authenticate',require('./route/account'))
+
 /**
  * AGENT ROUTES
  */
