@@ -1,7 +1,7 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Subscription, interval, Observable} from 'rxjs';
 import {Geolocation} from '@capacitor/geolocation';
-import {ApiService, LOCATIONINFO} from "./api.service";
+import {ApiService, LOCATIONINFO, LOCATIONRESPONSE} from "./api.service";
 
 @Injectable({
     providedIn: 'root',
@@ -12,6 +12,7 @@ export class LocationService {
     // location callback id
     public id: any;
     coordinates: EventEmitter<LOCATIONINFO> = new EventEmitter<LOCATIONINFO>();
+    public logs: EventEmitter<LOCATIONRESPONSE[]> = new EventEmitter<LOCATIONRESPONSE[]>()
     // current valid location fetched
     public currentLocationInfo: LOCATIONINFO;
     // location captured 60 Meters before
@@ -19,6 +20,7 @@ export class LocationService {
     // internal locations fetched from coordinates
     public internalLocationInfo: LOCATIONINFO;
     private intervalSubscriber: Subscription = new Subscription();
+    private loggerSubscriber: Subscription = new Subscription();
 
     constructor(private _api: ApiService) {
     }
@@ -96,11 +98,15 @@ export class LocationService {
                 return {lat: 0, lng: 0};
             });
     }
-    public getLocationHistory(){
+
+    public getLocationHistory() {
         let id = 1;
-        this._api.getLocationFromServer(id)
+        this._api.getLocationFromServer(id).subscribe((val: LOCATIONRESPONSE[]) => {
+            this.logs.emit(val)
+        })
     }
-    distance(lat1: number, lon1: number, lat2: number, lon2: number) {
+
+   private distance(lat1: number, lon1: number, lat2: number, lon2: number) {
         if (lat1 == lat2 && lon1 == lon2) {
             return 0;
         } else {
@@ -117,7 +123,7 @@ export class LocationService {
             dist = Math.acos(dist);
             dist = (dist * 180) / Math.PI;
             dist = dist * 60 * 1.1515;
-            dist = dist * 0.8684 ;
+            dist = dist * 0.8684;
             dist = dist * 1000
         }
 
@@ -130,6 +136,16 @@ export class LocationService {
         this.intervalSubscriber = interval(5000).subscribe(() =>
             this.getPosition()
         );
+    }
+
+    public getRealTimeLocationUpdates(): void {
+        this.isUpdatingLocation = true
+        this.loggerSubscriber = interval(5000).subscribe(() => this.getLocationHistory())
+    }
+
+    public stopRealTimeLocationUpdates(): void {
+        this.isUpdatingLocation = false;
+        this.loggerSubscriber.unsubscribe()
     }
 
     public stopLocationTracking(): void {

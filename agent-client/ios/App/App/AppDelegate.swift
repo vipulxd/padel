@@ -5,12 +5,12 @@ import CoreLocation
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegate , UNUserNotificationCenterDelegate {
 
-    
+
     var window: UIWindow?
     var locationManager : CLLocationManager!
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+
         // Ask for notification permission
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
@@ -22,9 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                 self.showAlert()
             }
         }
-        
+
         // Ask for location permission
-      
+
         // Override point for customization after application launch.
         return true
     }
@@ -42,16 +42,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         locationManager =  CLLocationManager()
-        locationManager?.startUpdatingLocation()
+
         locationManager?.delegate = self
-        locationManager.distanceFilter = 40
-        locationManager?.allowsBackgroundLocationUpdates = true
-        locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
-    
-        if CLLocationManager.locationServicesEnabled(){
-            locationManager.requestAlwaysAuthorization()
-        }
-        
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+                    // you have 2 choice
+                    // 1. requestAlwaysAuthorization
+                    // 2. requestWhenInUseAuthorization
+                    locationManager.requestAlwaysAuthorization()
+                }
+
+                locationManager.desiredAccuracy = kCLLocationAccuracyBest // The accuracy of the location data
+                locationManager.distanceFilter = 200 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
+                locationManager.delegate = self
+                locationManager.startMonitoringSignificantLocationChanges()
+        locationManager?.startUpdatingLocation()
         // Create a local notification to update user about locations being updated even in the background
         let content = UNMutableNotificationContent()
         content.title = NSString.localizedUserNotificationString(forKey: "Padel", arguments: nil)
@@ -82,18 +86,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-    
+
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    
+
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        
+
         // Called when the app was launched with a url. Feel free to add additional processing here,
         // but if you want the App API to support tracking app url opens, make sure to keep this call
         return ApplicationDelegateProxy.shared.application(app, open: url, options: options)
     }
-    
+
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         // Called when the app was launched with an activity, including Universal Links.
