@@ -11,20 +11,28 @@
   </div>
 
   <agm-map
-    [latitude]="coords.lat"
-    [longitude]="coords.lng"
+    [latitude]="coords[coords.length -1].lat"
+    [longitude]="coords[coords.length -1].lng"
     [disableDefaultUI]="true"
-    [zoom]="17"
+    [zoom]="getLocAcc()"
     [usePanning]="true"
-    [tilt]="50"
+    [tilt]="100"
   >
     >
     <agm-marker
-      [latitude]="coords.lat"
-      [longitude]="coords.lng"
+      *ngFor="let coordinate of coords; let i = index"
+      [latitude]="coordinate.lat"
+      [longitude]="coordinate.lng"
       [agmFitBounds]="true"
       [iconUrl]="$any(icon)"
     ></agm-marker>
-
+    <agm-polyline [visible]="true" [strokeWeight]="3" [strokeColor]="'#db7a69'">
+      <agm-polyline-point
+        *ngFor="let coordinate of coords; let i = index"
+        [latitude]="coordinate.lat"
+        [longitude]="coordinate.lng"
+      >
+      </agm-polyline-point>
+    </agm-polyline>
   </agm-map>
 </div>

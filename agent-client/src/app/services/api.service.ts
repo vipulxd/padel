@@ -20,7 +20,13 @@ export class ApiService {
             console.log(`Location ${val} is being sent to server`)
         })
     }
+    public getLocationFromServer(id: number){
+        this._http.request('GET',this.url).subscribe((val : any)=>{
+            console.log(val)
+        })
+    }
 }
+
 
 export interface LOCATIONINFO {
     lat: number,

@@ -32,13 +32,14 @@ export class LocationService {
                     acc: pos.coords.accuracy,
                     createdAt: pos.timestamp.toString()
                 };
-                this.coordinates.emit(this.currentLocationInfo);
+
                 if (this.previousLocationInfo) {
                     /**
                      * If location from GPS is > 50 acc. discard
                      */
                     this.internalLocationInfo = this.currentLocationInfo;
-console.log(`location ${pos.coords} with time stamp ${pos.timestamp}`)
+                    this.coordinates.emit(this.currentLocationInfo);
+                    console.log(`location ${pos.coords} with time stamp ${pos.timestamp}`)
                     if (this.previousLocationInfo != this.currentLocationInfo) {
                         var distanceFromPrevious = this.distance(
                             this.previousLocationInfo.lat,
@@ -51,6 +52,7 @@ console.log(`location ${pos.coords} with time stamp ${pos.timestamp}`)
                             if (pos.coords.accuracy < 40) {
                                 this._api.sendLocationToServer(this.currentLocationInfo)
                                 this.previousLocationInfo = this.currentLocationInfo;
+
                             }
                         } else {
                             console.log(
@@ -94,7 +96,10 @@ console.log(`location ${pos.coords} with time stamp ${pos.timestamp}`)
                 return {lat: 0, lng: 0};
             });
     }
-
+    public getLocationHistory(){
+        let id = 1;
+        this._api.getLocationFromServer(id)
+    }
     distance(lat1: number, lon1: number, lat2: number, lon2: number) {
         if (lat1 == lat2 && lon1 == lon2) {
             return 0;

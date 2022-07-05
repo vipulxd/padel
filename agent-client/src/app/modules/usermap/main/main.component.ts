@@ -8,15 +8,15 @@ import {LOCATIONINFO} from "../../../services/api.service";
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit, AfterViewInit {
-  public coords: LOCATIONINFO = {lat : 0,lng:0, acc:0,createdAt:''} ;
+  public coords: [LOCATIONINFO] = [{lat : 0,lng:0, acc:0,createdAt:''}] ;
   public updatingLocation: boolean = false;
 
   constructor(private locationService: LocationService) {}
 
   public icon = {
     scaledSize: {
-      width: 50,
-      height: 50,
+      width: 30,
+      height: 30,
     },
     url: './../../assets/icons/locationMarker.svg',
   };
@@ -28,7 +28,11 @@ export class MainComponent implements OnInit, AfterViewInit {
      * start continuous locations watch
      */
     this.locationService.coordinates.subscribe((val: LOCATIONINFO) => {
-     this.coords = val
+        if(this.coords[0].lat ===0){
+            this.coords.pop()
+        }
+     this.coords.push(val)
+        console.log(this.coords)
     });
     /**
      * Request for a single location update
@@ -46,6 +50,17 @@ export class MainComponent implements OnInit, AfterViewInit {
   public requestStopLocationUpdates() {
     this.updatingLocation = false;
     this.locationService.stopLocationTracking();
+  }
+  public getLocAcc(): number {
+      if (this.coords[this.coords.length - 1].acc < 10) {
+          return 20
+      } else if (this.coords[this.coords.length - 1].acc < 20) {
+          return 15
+      } else if (this.coords[this.coords.length - 1].acc < 30) {
+          return 12
+      } else {
+          return 10
+      }
   }
   ngAfterViewInit(): void {
     this.locationService.getCurrentLocation();

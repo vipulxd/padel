@@ -10,6 +10,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     var locationManager : CLLocationManager!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // Ask for notification permission
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             // Enable or disable features based on authorization.
@@ -20,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                 self.showAlert()
             }
         }
+        
+        // Ask for location permission
+      
         // Override point for customization after application launch.
         return true
     }
@@ -39,8 +44,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         locationManager =  CLLocationManager()
         locationManager?.startUpdatingLocation()
         locationManager?.delegate = self
+        locationManager.distanceFilter = 40
         locationManager?.allowsBackgroundLocationUpdates = true
         locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
+    
+        if CLLocationManager.locationServicesEnabled(){
+            locationManager.requestAlwaysAuthorization()
+        }
+        
         // Create a local notification to update user about locations being updated even in the background
         let content = UNMutableNotificationContent()
         content.title = NSString.localizedUserNotificationString(forKey: "Padel", arguments: nil)
@@ -85,10 +96,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        locationManager =  CLLocationManager()
-        if CLLocationManager.locationServicesEnabled(){
-            locationManager.requestAlwaysAuthorization()
-        }
         // Called when the app was launched with an activity, including Universal Links.
         // Feel free to add additional processing here, but if you want the App API to support
         // tracking app url opens, make sure to keep this call

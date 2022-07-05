@@ -9,7 +9,11 @@ const routes: Routes = [
 {
   path : 'profile',
   loadChildren : ()=> import('./modules/userprofile/userprofile.module').then(m=> m.UserprofileModule)
-}
+},
+    {
+        path : 'logs',
+        loadChildren: ()=> import('./modules/userlogs/userlogs.module').then(m=> m.UserlogsModule)
+    }
   ,  {
     path : '',
     redirectTo: 'map',
