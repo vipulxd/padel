@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-    developement_backend_url  : 'https://padel-config-api0server.herokuapp.com/api/location/1'
+    developement_backend_url  : 'https://padel-config-api0server.herokuapp.com'
 };

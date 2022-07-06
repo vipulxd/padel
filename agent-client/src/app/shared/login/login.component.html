@@ -1,0 +1,9 @@
+<div *ngIf="!isAuthenticated" class="box-component login-component-wrapper ">
+<div class="wrapper">
+<div class=" box-component logo"><img src="./assets/icons/114.png" class="logo-image" alt="logo"></div>
+   <div *ngIf="!isActive">{{errorString}}</div>
+    <div class="username"><input class="input-label" (keyup)="setActive()" type="email" placeholder="email" #email></div>
+    <div class="password"><input class="input-label" (keyup)="setActive()" type="password" placeholder="*********" #password> </div>
+    <div class="login-btn"><button class="btn-home" (click)="login(email.value,password.value)">LOGIN</button></div>
+</div>
+</div>

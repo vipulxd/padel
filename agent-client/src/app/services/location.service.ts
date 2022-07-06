@@ -2,6 +2,7 @@ import {Injectable, EventEmitter} from '@angular/core';
 import {Subscription, interval, Observable} from 'rxjs';
 import {Geolocation} from '@capacitor/geolocation';
 import {ApiService, LOCATIONINFO, LOCATIONRESPONSE} from "./api.service";
+import {AuthenticationService} from "./authentication.service";
 
 @Injectable({
     providedIn: 'root',
@@ -21,12 +22,17 @@ export class LocationService {
     public internalLocationInfo: LOCATIONINFO;
     private intervalSubscriber: Subscription = new Subscription();
     private loggerSubscriber: Subscription = new Subscription();
-
-    constructor(private _api: ApiService) {
+    private isLoggedIn : boolean ;
+    constructor(private _api: ApiService,
+                private _authservice : AuthenticationService
+    ) {
+        this._authservice.isAuthenticated.subscribe(val=>{
+            this.isLoggedIn = val;
+        })
     }
 
     async getPosition() {
-        await Geolocation.getCurrentPosition().then((pos) => {
+      this.isLoggedIn &&  await Geolocation.getCurrentPosition().then((pos) => {
             if (pos) {
                 this.currentLocationInfo = {
                     lat: pos.coords.latitude,
@@ -76,7 +82,7 @@ export class LocationService {
 
     public getCurrentLocation() {
         this.isLoading.emit(true);
-        Geolocation.getCurrentPosition()
+       this.isLoggedIn &&  Geolocation.getCurrentPosition()
             .then((pos) => {
                 this.currentLocationInfo = {
                     lat: pos.coords.latitude,
@@ -124,7 +130,6 @@ export class LocationService {
             dist = dist * 0.8684
             dist = dist * 1000
         }
-       console.log(dist)
         return dist;
     }
 
@@ -150,3 +155,5 @@ export class LocationService {
         this.intervalSubscriber.unsubscribe();
     }
 }
+
+

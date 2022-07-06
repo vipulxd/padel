@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
 import {LOCATIONINFO} from "../../../services/api.service";
+import {AuthenticationService} from "../../../services/authentication.service";
 
 @Component({
   selector: 'app-main',
@@ -10,8 +11,11 @@ import {LOCATIONINFO} from "../../../services/api.service";
 export class MainComponent implements OnInit, AfterViewInit {
   public coords: [LOCATIONINFO] = [{lat : 0,lng:0, acc:0,createdAt:''}] ;
   public updatingLocation: boolean = false;
+    public isAuthenticated : boolean ;
+  constructor(private locationService: LocationService,
+  private _authservice : AuthenticationService
 
-  constructor(private locationService: LocationService) {}
+  ) {}
 
   public icon = {
     scaledSize: {
@@ -24,6 +28,13 @@ export class MainComponent implements OnInit, AfterViewInit {
     /**
      * set loader
      */
+    this._authservice.isAuthenticated.subscribe((val)=>{
+        this.isAuthenticated = val;
+        if(val){
+            this.locationService.getCurrentLocation()
+        }
+    })
+
     /**
      * start continuous locations watch
      */
@@ -44,8 +55,10 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.updatingLocation = this.locationService.isUpdatingLocation;
   }
   public requestLocationUpdate() {
-    this.updatingLocation = true;
-    this.locationService.startLocationTracking();
+
+          this.updatingLocation = true;
+          this.locationService.startLocationTracking();
+
   }
   public requestStopLocationUpdates() {
     this.updatingLocation = false;

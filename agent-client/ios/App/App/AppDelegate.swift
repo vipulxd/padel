@@ -52,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                 }
 
                 locationManager.desiredAccuracy = kCLLocationAccuracyBest // The accuracy of the location data
-                locationManager.distanceFilter = 200 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
+                locationManager.distanceFilter = 10 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
                 locationManager.delegate = self
                 locationManager.startMonitoringSignificantLocationChanges()
         locationManager?.startUpdatingLocation()

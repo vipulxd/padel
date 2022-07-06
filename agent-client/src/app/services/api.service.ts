@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {observable, Observable, Subscription} from "rxjs";
+import {AuthenticationService} from "./authentication.service";
 
 
 @Injectable({
@@ -12,17 +13,21 @@ export class ApiService {
     private data: LOCATIONRESPONSE[];
 
     constructor(
-        private _http: HttpClient
+        private _http: HttpClient,
+        private _authService : AuthenticationService
     ) {
     }
 
     public sendLocationToServer(coordinates: LOCATIONINFO) {
         JSON.stringify(coordinates)
-        this._http.request("POST",this.url, { body:coordinates}).subscribe((val)=>{
+        const headers = new HttpHeaders({'x-access-token':localStorage.getItem('token')})
+        this._http.request("POST",this.url+locationApi.location, { body:coordinates, headers}).subscribe((val)=>{
             console.log(`Location ${val} is being sent to server`)
+        }, (err)=> {
+            console.log(err)
+                this._authService.isAuthenticated.emit(false)
         })
     }
-
 
     public  getLocationFromServer(id: number): Observable<any> {
      return this._http.request('GET',this.url)
@@ -43,4 +48,7 @@ export interface LOCATIONRESPONSE {
     id: number
     latitude: number
     longitude: number
+}
+enum locationApi {
+    location = '/api/agent/location'
 }
