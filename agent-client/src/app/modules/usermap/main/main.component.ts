@@ -43,7 +43,6 @@ export class MainComponent implements OnInit, AfterViewInit {
             this.coords.pop()
         }
      this.coords.push(val)
-        console.log(this.coords)
     });
     /**
      * Request for a single location update

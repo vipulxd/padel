@@ -10,6 +10,7 @@ export class AuthenticationService {
     public isAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
     public url: string = environment.developement_backend_url
    public errorString : EventEmitter<string> = new EventEmitter<string>();
+    public name : string ;
     constructor(private http: HttpClient) {
     }
 
@@ -21,7 +22,7 @@ export class AuthenticationService {
         JSON.stringify(data)
         this.http.request('POST', `${this.url}${AUTHAPI.login}`, {body: data}).subscribe((response:AUTHRESPONSE) => {
             localStorage.setItem('token',response.token)
-
+            localStorage.setItem('name',response.name)
             this.isAuthenticated.emit(true)
         }, (err) => {
            this.errorString.emit(err.error.message)

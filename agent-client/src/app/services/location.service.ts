@@ -46,7 +46,7 @@ export class LocationService {
                      * If location from GPS is > 35 acc. discard
                      */
                     this.internalLocationInfo = this.currentLocationInfo;
-                    this.coordinates.emit(this.currentLocationInfo);
+
                     console.log(`location ${pos.coords} with time stamp ${pos.timestamp}`)
                     if (this.previousLocationInfo != this.currentLocationInfo) {
                         var distanceFromPrevious = this.distance(
@@ -59,6 +59,7 @@ export class LocationService {
                         if (distanceFromPrevious >= 60) {
                             if (pos.coords.accuracy < 35) {
                                 this._api.sendLocationToServer(this.currentLocationInfo)
+                                this.coordinates.emit(this.currentLocationInfo);
                                 this.previousLocationInfo = this.currentLocationInfo;
                             }
                         } else {

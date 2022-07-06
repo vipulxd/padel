@@ -3,18 +3,18 @@
   position: absolute;
   top: 0 !important;
   margin: 50px 10px;
-  height:90%;
-
+  height:50%;
+  min-height: 150px !important;
 }
 .wrapper{
 
-  height:80%;
-  margin:15% auto;
-  padding:10px;
+  height:100%;
+  margin:0% auto;
+  padding:30px;
   width:100%;
   display: flex;
 align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   flex-direction: column;
 }
 .logo{
@@ -38,4 +38,7 @@ align-items: center;
   background: transparent;
   border-radius: 10px;
 
+}
+.username {
+  margin: 10px 0px;
 }

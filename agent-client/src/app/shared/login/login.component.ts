@@ -26,7 +26,6 @@ ngOnInit(){
    }else {
        this.isAuthenticated =  false;
    }
-    console.log(this.isAuthenticated)
 }
 public setActive(){
     this.isActive = true;

@@ -11,7 +11,6 @@ export class AppComponent implements OnInit{
   constructor(private _authservice : AuthenticationService) {
   }
   ngOnInit(){
-      console.log(this.token)
       if(this.token != null){
           this._authservice.isAuthenticated.emit(true)
       }else {
