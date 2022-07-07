@@ -1,7 +1,9 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-
+import {AUTHAPI} from '../enums/enum'
+import {AUTHRESPONSE} from "../interfaces/interfaces";
+import {LocationService} from "./location.service";
 @Injectable({
     providedIn: 'root'
 })
@@ -11,7 +13,9 @@ export class AuthenticationService {
     public url: string = environment.developement_backend_url
    public errorString : EventEmitter<string> = new EventEmitter<string>();
     public name : string ;
-    constructor(private http: HttpClient) {
+    public isLoading : EventEmitter<boolean> =  new EventEmitter<boolean>();
+    constructor(private http: HttpClient
+                ) {
     }
 
     public login(e: string, p: string) {
@@ -19,29 +23,21 @@ export class AuthenticationService {
             username: e,
             password: p
         }
+        this.isLoading.emit(true)
         JSON.stringify(data)
         this.http.request('POST', `${this.url}${AUTHAPI.login}`, {body: data}).subscribe((response:AUTHRESPONSE) => {
             localStorage.setItem('token',response.token)
             localStorage.setItem('name',response.name)
             this.isAuthenticated.emit(true)
+            this.isLoading.emit(false)
         }, (err) => {
            this.errorString.emit(err.error.message)
+            this.isLoading.emit(false)
+        },()=>{
+            this.isLoading.emit(false)
         })
 
     }
 }
 
-enum AUTHAPI {
-    login = '/api/agent/login',
-    register = '/api/agent/register'
-}
-interface AUTHRESPONSE {
-    admin_id: string
-    agent_id:string
-    createdat: string
-    name: string
-    password: string
-    role:string
-    token: string
-    username:string
-}
+

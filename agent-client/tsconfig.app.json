@@ -9,7 +9,9 @@
   },
   "files": [
     "src/main.ts",
-    "src/polyfills.ts"
+    "src/polyfills.ts",
+    "src/app/interfaces/interfaces.ts",
+    "src/app/enums/enum.ts"
   ],
   "include": [
     "src/**/*.d.ts"

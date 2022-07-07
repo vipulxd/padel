@@ -1,8 +1,9 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Subscription, interval, Observable} from 'rxjs';
 import {Geolocation} from '@capacitor/geolocation';
-import {ApiService, LOCATIONINFO, LOCATIONRESPONSE} from "./api.service";
+import {ApiService} from "./api.service";
 import {AuthenticationService} from "./authentication.service";
+import {LOCATIONINFO, LOCATIONRESPONSE} from "../interfaces/interfaces";
 
 @Injectable({
     providedIn: 'root',
@@ -56,12 +57,10 @@ export class LocationService {
                             this.currentLocationInfo.lng
                         );
 
-                        if (distanceFromPrevious >= 60) {
-                            if (pos.coords.accuracy < 35) {
+                        if (distanceFromPrevious >= 30) {
                                 this._api.sendLocationToServer(this.currentLocationInfo)
                                 this.coordinates.emit(this.currentLocationInfo);
                                 this.previousLocationInfo = this.currentLocationInfo;
-                            }
                         } else {
                             console.log(
                                 `Agent travelled ${distanceFromPrevious}M discarding with accuracy ${pos.coords.accuracy}`
@@ -82,9 +81,11 @@ export class LocationService {
     }
 
     public getCurrentLocation() {
-        this.isLoading.emit(true);
+
        this.isLoggedIn &&  Geolocation.getCurrentPosition()
+
             .then((pos) => {
+                this.isLoading.emit(true);
                 this.currentLocationInfo = {
                     lat: pos.coords.latitude,
                     lng: pos.coords.longitude,
@@ -128,7 +129,7 @@ export class LocationService {
             dist = Math.acos(dist);
             dist = (dist * 180) / Math.PI;
             dist = dist * 60 * 1.1515;
-            dist = dist * 0.8684
+            dist = dist * 0.8684;
             dist = dist * 1000
         }
         return dist;

@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {observable, Observable, Subscription} from "rxjs";
+import { Observable} from "rxjs";
 import {AuthenticationService} from "./authentication.service";
+import {LOCATIONINFO} from "../interfaces/interfaces";
+import {locationApi} from "../enums/enum";
 
 
 @Injectable({
@@ -10,7 +12,6 @@ import {AuthenticationService} from "./authentication.service";
 })
 export class ApiService {
     public url: string = environment.developement_backend_url
-    private data: LOCATIONRESPONSE[];
 
     constructor(
         private _http: HttpClient,
@@ -34,20 +35,5 @@ export class ApiService {
 }
 
 
-export interface LOCATIONINFO {
-    lat: number,
-    lng: number,
-    createdAt: string,
-    acc: number,
-}
-export interface LOCATIONRESPONSE {
-    accuracy: number
-    agent_id: number
-    createdat: string
-    id: number
-    latitude: number
-    longitude: number
-}
-enum locationApi {
-    location = '/api/agent/location'
-}
+
+

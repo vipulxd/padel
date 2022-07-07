@@ -44,6 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         locationManager =  CLLocationManager()
 
         locationManager?.delegate = self
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.showsBackgroundLocationIndicator = true
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
                     // you have 2 choice
                     // 1. requestAlwaysAuthorization
@@ -53,16 +56,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
 
                 locationManager.desiredAccuracy = kCLLocationAccuracyBest // The accuracy of the location data
                 locationManager.distanceFilter = 10 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
-                locationManager.delegate = self
                 locationManager.startMonitoringSignificantLocationChanges()
         locationManager?.startUpdatingLocation()
         // Create a local notification to update user about locations being updated even in the background
         let content = UNMutableNotificationContent()
         content.title = NSString.localizedUserNotificationString(forKey: "Padel", arguments: nil)
-        content.body = NSString.localizedUserNotificationString(forKey: "Padel is running.", arguments: nil)
-        content.sound = UNNotificationSound.default
+        content.body = NSString.localizedUserNotificationString(forKey: "Padel is running in background.", arguments: nil)
         content.categoryIdentifier = "notify-test"
-
+        
         let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest.init(identifier: "notify-test", content: content, trigger: trigger)
 
@@ -86,7 +87,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 

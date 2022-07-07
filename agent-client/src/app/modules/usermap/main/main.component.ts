@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
-import {LOCATIONINFO} from "../../../services/api.service";
 import {AuthenticationService} from "../../../services/authentication.service";
+import {LOCATIONINFO} from "../../../interfaces/interfaces";
 
 @Component({
   selector: 'app-main',
