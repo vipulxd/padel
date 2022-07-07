@@ -6,9 +6,11 @@ import {AgmCoreModule} from "@agm/core";
 import { MainComponent } from './main/main.component';
 
 
+
 @NgModule({
   declarations: [
-    MainComponent
+    MainComponent,
+
   ],
   imports: [
     CommonModule,

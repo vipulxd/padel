@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
 import {AuthenticationService} from "../../../services/authentication.service";
 import {LOCATIONINFO} from "../../../interfaces/interfaces";
+
 
 @Component({
   selector: 'app-main',
@@ -64,14 +65,17 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.locationService.stopLocationTracking();
   }
   public getLocAcc(): number {
+      /**
+       * SET location zoom as per the accuracy of the location
+       */
       if (this.coords[this.coords.length - 1].acc < 10) {
           return 20
       } else if (this.coords[this.coords.length - 1].acc < 20) {
           return 18
       } else if (this.coords[this.coords.length - 1].acc < 30) {
-          return 14
+          return 16
       } else {
-          return 13
+          return 15
       }
   }
   ngAfterViewInit(): void {

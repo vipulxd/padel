@@ -5,7 +5,7 @@ import { Observable} from "rxjs";
 import {AuthenticationService} from "./authentication.service";
 import {LOCATIONINFO} from "../interfaces/interfaces";
 import {locationApi} from "../enums/enum";
-
+import {Storage} from "@capacitor/storage";
 
 @Injectable({
     providedIn: 'root'
@@ -19,12 +19,20 @@ export class ApiService {
     ) {
     }
 
-    public sendLocationToServer(coordinates: LOCATIONINFO) {
+    public async  sendLocationToServer(coordinates: LOCATIONINFO) {
         JSON.stringify(coordinates)
-        const headers = new HttpHeaders({'x-access-token':localStorage.getItem('token')})
+        let token = localStorage.getItem('token');
+        let finalToken ;
+        if( token == null ) {
+            finalToken = await Storage.get({ key: 'token' });
+            token = finalToken;
+        }
+        finalToken = token;
+        const headers = new HttpHeaders({'x-access-token':finalToken})
         this._http.request("POST",this.url+locationApi.location, { body:coordinates, headers}).subscribe((val)=>{
             console.log(`Location ${val} is being sent to server`)
         }, ()=> {
+
                 this._authService.isAuthenticated.emit(false)
         })
     }

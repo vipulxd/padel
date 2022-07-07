@@ -50,7 +50,7 @@ export class LocationService {
 
                     console.log(`location ${pos.coords} with time stamp ${pos.timestamp}`)
                     if (this.previousLocationInfo != this.currentLocationInfo) {
-                        var distanceFromPrevious = this.distance(
+                        var distanceFromPrevious = LocationService.distance(
                             this.previousLocationInfo.lat,
                             this.previousLocationInfo.lng,
                             this.currentLocationInfo.lat,
@@ -81,11 +81,10 @@ export class LocationService {
     }
 
     public getCurrentLocation() {
-
+        this.isLoading.emit(true);
        this.isLoggedIn &&  Geolocation.getCurrentPosition()
-
             .then((pos) => {
-                this.isLoading.emit(true);
+
                 this.currentLocationInfo = {
                     lat: pos.coords.latitude,
                     lng: pos.coords.longitude,
@@ -101,6 +100,7 @@ export class LocationService {
                 });
             })
             .catch(() => {
+                this.isLoading.emit(false);
                 return {lat: 0, lng: 0};
             });
     }
@@ -112,7 +112,7 @@ export class LocationService {
         })
     }
 
-   private distance(lat1: number, lon1: number, lat2: number, lon2: number) {
+   private static distance(lat1: number, lon1: number, lat2: number, lon2: number) {
         if (lat1 == lat2 && lon1 == lon2) {
             return 0;
         } else {
@@ -143,19 +143,18 @@ export class LocationService {
         );
     }
 
-    public getRealTimeLocationUpdates(): void {
-        this.isUpdatingLocation = true
-        this.loggerSubscriber = interval(5000).subscribe(() => this.getLocationHistory())
-    }
-
     public stopRealTimeLocationUpdates(): void {
         this.loggerSubscriber.unsubscribe()
     }
 
+    /**
+     * Stop the location Tracking when user presses the STOP button
+     */
     public stopLocationTracking(): void {
         this.isUpdatingLocation = false;
         this.intervalSubscriber.unsubscribe();
     }
+
 }
 
 

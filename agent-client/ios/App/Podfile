@@ -10,6 +10,8 @@ def capacitor_pods
   pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../../node_modules/@capacitor/ios'
   pod 'CapacitorGeolocation', :path => '../../node_modules/@capacitor/geolocation'
+  pod 'CapacitorStorage', :path => '../../node_modules/@capacitor/storage'
+  pod 'CapacitorSuppressLongpressGesture', :path => '../../node_modules/capacitor-suppress-longpress-gesture'
 end
 
 target 'App' do

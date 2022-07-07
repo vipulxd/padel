@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {AuthenticationService} from "../../services/authentication.service";
+import {Storage} from "@capacitor/storage";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,8 @@ public isActive : boolean = false
 public errorString : string ;
 public token : string = localStorage.getItem('token')
   constructor(private _authservice : AuthenticationService) { }
-ngOnInit(){
+ async ngOnInit(){
+
     this._authservice.isAuthenticated.subscribe(val=>{
         this.isAuthenticated = val
     })
@@ -20,8 +22,8 @@ ngOnInit(){
        this.isActive = false;
        this.errorString = val
    })
-
-   if(this.token != null){
+    const { value } = await Storage.get({ key: 'token' });
+   if(this.token != null || value != null ){
        this.isAuthenticated = true
    }else {
        this.isAuthenticated =  false;

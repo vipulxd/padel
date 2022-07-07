@@ -1,6 +1,10 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {AuthenticationService} from "./services/authentication.service";
 
+// Suppress the long press gesture inside the app
+import { SuppressLongpressGesture } from 'capacitor-suppress-longpress-gesture';
+SuppressLongpressGesture.activateService();
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

@@ -8,12 +8,14 @@ import { LoaderComponent } from './shared/loader/loader.component';
 import {HttpClientModule} from "@angular/common/http";
 import { LoginComponent } from './shared/login/login.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     LoaderComponent,
-    LoginComponent
+    LoginComponent,
+
   ],
   imports: [
     BrowserModule,

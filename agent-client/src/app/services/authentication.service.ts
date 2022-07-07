@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {AUTHAPI} from '../enums/enum'
 import {AUTHRESPONSE} from "../interfaces/interfaces";
-import {LocationService} from "./location.service";
+import { Storage } from '@capacitor/storage';
 @Injectable({
     providedIn: 'root'
 })
@@ -11,7 +11,7 @@ export class AuthenticationService {
 
     public isAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
     public url: string = environment.developement_backend_url
-   public errorString : EventEmitter<string> = new EventEmitter<string>();
+    public errorString : EventEmitter<string> = new EventEmitter<string>();
     public name : string ;
     public isLoading : EventEmitter<boolean> =  new EventEmitter<boolean>();
     constructor(private http: HttpClient
@@ -28,6 +28,7 @@ export class AuthenticationService {
         this.http.request('POST', `${this.url}${AUTHAPI.login}`, {body: data}).subscribe((response:AUTHRESPONSE) => {
             localStorage.setItem('token',response.token)
             localStorage.setItem('name',response.name)
+            this.storeTokenInLocalStorage(response.token,response.name)
             this.isAuthenticated.emit(true)
             this.isLoading.emit(false)
         }, (err) => {
@@ -37,6 +38,16 @@ export class AuthenticationService {
             this.isLoading.emit(false)
         })
 
+    }
+    private async storeTokenInLocalStorage(t:string , n :string){
+        await Storage.set({
+            key: 'token',
+            value: t,
+        });
+        await  Storage.set({
+            key : 'name',
+            value : n
+        })
     }
 }
 
