@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                 }
 
                 locationManager.desiredAccuracy = kCLLocationAccuracyBest // The accuracy of the location data
-                locationManager.distanceFilter = 10 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
+                locationManager.distanceFilter = 30 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
                 locationManager.startMonitoringSignificantLocationChanges()
         locationManager?.startUpdatingLocation()
         // Create a local notification to update user about locations being updated even in the background
@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         content.title = NSString.localizedUserNotificationString(forKey: "Padel", arguments: nil)
         content.body = NSString.localizedUserNotificationString(forKey: "Padel is running in background.", arguments: nil)
         content.categoryIdentifier = "notify-test"
-        
+
         let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest.init(identifier: "notify-test", content: content, trigger: trigger)
 

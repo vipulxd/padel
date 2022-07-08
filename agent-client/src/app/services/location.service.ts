@@ -57,7 +57,7 @@ export class LocationService {
                             this.currentLocationInfo.lng
                         );
 
-                        if (distanceFromPrevious >= 30) {
+                        if (distanceFromPrevious >= 60) {
                                 this._api.sendLocationToServer(this.currentLocationInfo)
                                 this.coordinates.emit(this.currentLocationInfo);
                                 this.previousLocationInfo = this.currentLocationInfo;

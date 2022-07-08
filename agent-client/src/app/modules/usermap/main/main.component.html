@@ -26,13 +26,5 @@
       [agmFitBounds]="true"
       [iconUrl]="$any(icon)"
     ></agm-marker>
-    <agm-polyline [visible]="true" [strokeWeight]="3" [strokeColor]="'#db7a69'">
-      <agm-polyline-point
-        *ngFor="let coordinate of coords; let i = index"
-        [latitude]="coordinate.lat"
-        [longitude]="coordinate.lng"
-      >
-      </agm-polyline-point>
-    </agm-polyline>
   </agm-map>
 </div>
