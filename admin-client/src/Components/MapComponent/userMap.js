@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { MapContainer,Marker,   TileLayer} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
-import marker from './../icons/locationMarker.svg'
+import marker from '../../Icons/locationMarker.svg'
 import L from 'leaflet';
 const newicon = new L.Icon({
     iconUrl: marker,
