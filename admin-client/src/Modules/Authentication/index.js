@@ -1,8 +1,10 @@
 import './index.css'
 import {useState} from "react";
 import {login, register} from '../../Api'
+import {useNavigate} from "react-router";
 
 export function Authentication() {
+    let navigate  = useNavigate();
     const [request, setRequest] = useState('LOGIN')
     const [authProps, setAuthProps] = useState({username: '', password: '', uname: '', contact: ''})
 
@@ -16,11 +18,16 @@ export function Authentication() {
     }
 
     function handleClick() {
-        let data;
         if (request === "LOGIN") {
-            login(authProps)
+            login(authProps).then(d=>{
+                localStorage.setItem('token',d.token)
+                navigate('/dashboard')
+            })
         } else {
-            register(authProps)
+            register(authProps).then(d=>{
+                localStorage.setItem('token',d.token)
+                navigate('/dashboard')
+            })
         }
     }
 
