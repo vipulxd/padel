@@ -5,6 +5,7 @@ const pool = require('./../config/database')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const {ValidateEmail} = require("../utils/helperFunctions");
+const verifyAdminToken = require("../middleware/adminAuthenticator");
 
 /**
  * AUTHENTICATION ROUTES
@@ -89,6 +90,19 @@ router.route('/login')
         } catch (e) {
             res.status(300).send({message: e.message})
         }
+    })
+/**
+ * GET location in between a timestamp
+ */
+router.route('/location/:from/:to')
+    .get(verifyAdminToken,(req,res)=>{
+    try{
+    const fromTime =  req.params.from;
+    const toTime =  req.params.to;
+
+    }catch (e) {
+        res.status(500).send({message:"Incorrect request error"})
+    }
     })
 
 module.exports = router;

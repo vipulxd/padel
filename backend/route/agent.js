@@ -33,7 +33,8 @@ router.route('/location')
         try {
             const agent_id = req.user.user_id;
             const location_ID = uuid.v4();
-            const {acc, lat, lng, createdAt} = req.body;
+            let {acc, lat, lng, createdAt} = req.body;
+            createdAt =  new Date(createdAt).toISOString();
             pool.query('INSERT INTO location(accuracy,latitude,longitude,createdat,agent_id, location_id) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *', [
                 acc, lat, lng, createdAt, agent_id, location_ID
             ]).then(
@@ -43,6 +44,7 @@ router.route('/location')
             res.sendStatus(500)
         }
     })
+
 
 /**
  * ACCOUNT ROUTES
