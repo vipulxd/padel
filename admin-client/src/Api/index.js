@@ -5,7 +5,7 @@ const ApiEnum = {
     register: '/api/admin/register',
     forgotPassword: '/api/admin/forget-password',
     agents: '/api/admin/agents',
-    agentLocation: '/api/admin/location',
+    agentLocation: '/api/admin/locations',
     agentRegister: '/api/agent/register',
 
 }
@@ -43,6 +43,6 @@ export function getAgentLocationByid(payload) {
 
 export function getAgentInAssociatedToAdmin() {
     return axios.get(`${baseUrl}${ApiEnum.agents}`, {
-        headers: {'x-access-toke': token},
+        headers: {'x-access-token': token},
     }).then((response)=> response.data)
 }

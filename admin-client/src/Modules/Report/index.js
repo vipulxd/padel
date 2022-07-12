@@ -13,7 +13,7 @@ export function Report() {
     return (
         <>
             <UserSelector setCurrrentAgent={setCurrrentAgent}/>
-            <UserMap zoom={6} userId={selectedAgentId}/>
+            <UserMap zoom={20} userId={selectedAgentId} report={true}/>
         </>
     )
 }

@@ -9,25 +9,23 @@ const newicon = new L.Icon({
     iconSize: [30, 30]
 });
 
-export const UserMap = ({userId,zoom}) => {
+export const UserMap = ({userId,zoom,report,agentId}) => {
     const [data, setData] = useState([{latitude:0,longitude:0}])
     const makeAPICall = async () => {
         try {
-          userId && getAgentLocationByid(userId).then(data=> {
+           userId && getAgentLocationByid(userId).then(data=> {
                setData(data)
            })
         } catch (e) {
         }
     }
-
-
     useEffect(() => {
         makeAPICall()
-    }, [])
+    }, [userId,agentId])
     return (
-        data.length > 0 && (
+        data[0].latitude != 0 && (
             <MapContainer
-               center={{lat:data[data.length -1].latitude,lng:data[data.length -1].longitude}}
+               center={{lat:data[data.length -1 ].latitude,lng:data[data.length - 1].longitude}}
                 zoom={zoom}
                 style={{height: "100vh", width: "100vw"}}
                 scrollWheelZoom={true}> <TileLayer
