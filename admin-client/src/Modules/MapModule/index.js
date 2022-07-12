@@ -1,8 +1,12 @@
+import {UserMap} from "../../Components/MapComponent/userMap";
 
+/**
+ * Live locations of every single agent can be seen here
+ */
 
 export function MapModule(){
 
     return (
-       <>Live locations will be displayed</>
+       <><UserMap zoom={4}/></>
     )
 }

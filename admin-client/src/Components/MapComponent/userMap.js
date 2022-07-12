@@ -9,12 +9,11 @@ const newicon = new L.Icon({
     iconSize: [30, 30]
 });
 
-export const UserMap = () => {
-    const agentId = '6081abde-aa64-43a6-9601-e628ef38a9dc';
-    const [data, setData] = useState([])
+export const UserMap = ({userId,zoom}) => {
+    const [data, setData] = useState([{latitude:0,longitude:0}])
     const makeAPICall = async () => {
         try {
-           getAgentLocationByid(agentId).then(data=> {
+          userId && getAgentLocationByid(userId).then(data=> {
                setData(data)
            })
         } catch (e) {
@@ -29,13 +28,13 @@ export const UserMap = () => {
         data.length > 0 && (
             <MapContainer
                center={{lat:data[data.length -1].latitude,lng:data[data.length -1].longitude}}
-                zoom={20}
+                zoom={zoom}
                 style={{height: "100vh", width: "100vw"}}
                 scrollWheelZoom={true}> <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-                {data &&  data.map((item,index)=>(
+                {userId &&  data &&  data.map((item,index)=>(
                          <Marker key={index} position={[item.latitude,item.longitude]} icon={newicon} />
                      ))
                }

@@ -8,16 +8,18 @@ export function Navbar() {
     const data = [
         {
             path: 'map',
-            text: "Live"
+            text: "Live",
+            iconsUrl: 'live.png'
         },
         {
             path: 'report',
             text: "Report",
-
+            iconsUrl: 'map.png'
         },
         {
             path: 'agents',
-            text: "Agents"
+            text: "Agents",
+            iconsUrl: 'insurance.png'
         }
 
     ]
@@ -37,14 +39,16 @@ export function Navbar() {
                                 key={index}
                                 to={item.path}
                                 className={({isActive}) => isActive ? 'activeStyle' : 'inactiveStyle'}>
-                                {item.text}
+                                <div className={'lower-end'}>
+                                    <img src={`/icons/${item.iconsUrl}`}/>
+                                </div>
                             </NavLink>
                         </li>
                     ))}
                 </ul>
             </nav>
-            <div className={'btn-naked lower-end'}>
-                <button style={{color: 'white', margin: 0}} onClick={logout}>LOGOUT</button>
+            <div className={'lower-end'}>
+                <img src={'/icons/logout.png'} onClick={logout}></img>
             </div>
         </div>
     )
