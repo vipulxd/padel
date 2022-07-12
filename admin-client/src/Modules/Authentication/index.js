@@ -21,12 +21,12 @@ export function Authentication() {
         if (request === "LOGIN") {
             login(authProps).then(d=>{
                 localStorage.setItem('token',d.token)
-                navigate('/dashboard')
+                navigate('/dashboard/report')
             })
         } else {
             register(authProps).then(d=>{
                 localStorage.setItem('token',d.token)
-                navigate('/dashboard')
+                navigate('/dashboard/register')
             })
         }
     }
