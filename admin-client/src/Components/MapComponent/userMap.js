@@ -10,9 +10,12 @@ const newicon = new L.Icon({
     iconSize: [30, 30]
 });
 
-export const UserMap = ({userId, zoom, report, agentId}) => {
-    const [timeState, setTimeState] =  useState({from:new Date(new Date().setHours(0, 0, 0, 0)).toISOString() ,
-        to: new Date(new Date().setHours(23, 59, 59, 999)).toISOString()});
+export const UserMap = ({userId, zoom, report, agentId, date}) => {
+    const polyline_options = {color: '#db7a69', weight: '3',};
+    const [timeState, setTimeState] = useState({
+        from: new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
+        to: new Date(new Date().setHours(23, 59, 59, 999)).toISOString()
+    });
     const [lastOccurance, setlastOccurance] = useState([{latitude: 0, longitude: 0}]);
     const [polylinePoints, setPolylinePoints] = useState([{
         from_latitude: 0,
@@ -22,12 +25,14 @@ export const UserMap = ({userId, zoom, report, agentId}) => {
     }])
     const makeAPICall = async () => {
         try {
-            userId && getAgentLocationByid(userId,timeState.from,timeState.to).then(data => {
-                setlastOccurance([{
-                    latitude: data[data.length - 1].latitude,
-                    longitude: data[data.length - 1].longitude
-                }])
-                drawPolyline(data)
+            userId && getAgentLocationByid(userId, timeState.from, timeState.to).then(data => {
+                if (data.length > 0) {
+                    setlastOccurance([{
+                        latitude: data[data.length - 1].latitude,
+                        longitude: data[data.length - 1].longitude
+                    }])
+                    drawPolyline(data)
+                }
             })
         } catch (e) {
         }
@@ -40,19 +45,33 @@ export const UserMap = ({userId, zoom, report, agentId}) => {
     function drawPolyline(data) {
         let points = [];
         setPolylinePoints([])
-        for (let i = 0; i < data.length - 1; i++) {
-            points.push(
-                [Number(data[i].latitude),
-                    Number(data[i].longitude)]
-            )
+        if (data.length > 0) {
+            for (let i = 0; i < data.length - 1; i++) {
+                points.push(
+                    [Number(data[i].latitude),
+                        Number(data[i].longitude)]
+                )
+            }
+            setPolylinePoints(points)
         }
-        setPolylinePoints(points)
     }
 
-    const polyline_options = {color: '#db7a69', weight: '3',};
+    /**
+     * Format date defined
+     */
+    function redefineDate() {
+        setTimeState({
+            from: new Date(new Date(date).setHours(0, 0, 0, 0)).toISOString(),
+            to: new Date(new Date(date).setHours(23, 59, 59, 999)).toISOString()
+        });
+    }
+
+
     useEffect(() => {
+        setPolylinePoints([])
         makeAPICall()
-    }, [userId, agentId])
+        redefineDate()
+    }, [userId, agentId, date])
     return (
         <>
             {lastOccurance[0].latitude !== 0 && (
@@ -71,7 +90,7 @@ export const UserMap = ({userId, zoom, report, agentId}) => {
 
                     }
                     {
-                        polylinePoints && polylinePoints.map((item, index) => (
+                        polylinePoints.length > 0 && polylinePoints.map((item, index) => (
                             <Marker key={index} position={{lat: item[0], lng: item[1]}} icon={newicon}/>
                         ))
                     }

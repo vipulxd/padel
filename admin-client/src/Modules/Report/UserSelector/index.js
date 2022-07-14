@@ -2,43 +2,47 @@ import React, {useEffect, useState} from 'react'
 import {getAgentInAssociatedToAdmin} from "../../../Api";
 import './index.css'
 import Dropdown from 'react-bootstrap/Dropdown';
-import DateTimePicker from "react-datetime-picker";
 
-export const UserSelector = ({setCurrrentAgent}) => {
+export const UserSelector = ({setCurrrentAgent, setDefinedDate}) => {
     const [agents, setAgents] = useState([{name: '', agent_id: ''}])
-
+    const [selectedAgent, setSelectedAgent] = useState('')
     useEffect(() => {
             getAgentInAssociatedToAdmin().then(
                 d => {
-                    setAgents(d);
+                    setSelectedAgent(d[0].name)
                     setCurrrentAgent(d[0].agent_id)
+                    setAgents(d);
                 })
         }
         , [])
-    const value =  new Date();
-    function handleChange(e){
-        console.log(e)
+
+    function handleSelect(name, id) {
+        setSelectedAgent(name)
+        setCurrrentAgent(id)
     }
+
     return (
         <>
             <div className={'selector-wrapper'}>
                 <div className={'container-wrapper'}>
                     <div>
-                        <Dropdown >
+                        <Dropdown>
                             <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                                Select agent
+                                {selectedAgent}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                                { agents.map(items =>(
-                                    <Dropdown.Item onClick={setCurrrentAgent(items.agent_id)}>{items.name}</Dropdown.Item>
-                                    ))
+                                {agents.map((items,index) => (
+                                    <Dropdown.Item key={index}
+                                        onClick={() => handleSelect(items.name, items.agent_id)}>{items.name}</Dropdown.Item>
+                                ))
                                 }
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
                     <div>
-                        <DateTimePicker onChange={handleChange} value={value} />
+                        {/*<DateTimePicker onChange={handleChange} value={value} />*/}
+                        <input type={'date'} onChange={event => setDefinedDate(event.target.value)}/>
                     </div>
                     <div>
                         <button className={'btn-filled btn-filter'}>SEARCH</button>
