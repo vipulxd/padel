@@ -1,0 +1,10 @@
+#dropdown-basic{
+    background-color: #db7a69 ;
+    border: none;
+    width:240px !important;
+    text-align: center;
+
+}
+#dropdown-basic:focus{
+    border:none !important;
+}

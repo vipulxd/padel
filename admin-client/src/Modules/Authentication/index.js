@@ -2,15 +2,15 @@ import './index.css'
 import {useState} from "react";
 import {login, register} from '../../Api'
 import {useNavigate} from "react-router";
+import Loader from "../../Components/Loader";
 
 export function Authentication() {
     let navigate  = useNavigate();
     const [request, setRequest] = useState('LOGIN')
     const [authProps, setAuthProps] = useState({username: '', password: '', uname: '', contact: ''})
-
+    const [loading , setLoading] =  useState(false);
     function handleChange(e) {
         e.preventDefault()
-        console.log(e.target.name, e.target.value)
         setAuthProps(prevState => ({
             ...prevState,
             [e.target.name]: e.target.value
@@ -18,16 +18,30 @@ export function Authentication() {
     }
 
     function handleClick() {
+        setLoading(true)
         if (request === "LOGIN") {
             login(authProps).then(d=>{
                 localStorage.setItem('token',d.token)
-                navigate('/dashboard/report')
+                if (localStorage.getItem('token')) {
+                    navigate('/dashboard/report')
+                }
+                setLoading(false)
+
             })
+                .catch((e)=> {
+                    setLoading(false)
+                })
         } else {
             register(authProps).then(d=>{
                 localStorage.setItem('token',d.token)
-                navigate('/dashboard/register')
+                if(localStorage.getItem('token')){
+                    navigate('/dashboard/report')
+                }
+                setLoading(false)
             })
+                .catch((e)=>{
+                    setLoading(false)
+                })
         }
     }
 
@@ -43,17 +57,17 @@ export function Authentication() {
         <div className="auth-wrapper">
             <div className={"wrapper box-shadow"}>
                 {request === 'LOGIN' && <Login toggleRequestState={toggleRequestState} handleChange={handleChange}
-                                               handleClick={handleClick}/>}
+                                               handleClick={handleClick} loading={loading}/>}
                 {request === 'REGISTER' &&
                     <Register toggleRequestState={toggleRequestState} handleChange={handleChange}
-                              handleClick={handleClick}/>}
+                              handleClick={handleClick} loading={loading}/>}
             </div>
         </div>
     )
 }
 
 
-function Login({toggleRequestState, handleChange, handleClick}) {
+function Login({toggleRequestState, handleChange, handleClick , loading}) {
 
     return (
         <div className={'login-wrapper'}>
@@ -62,7 +76,7 @@ function Login({toggleRequestState, handleChange, handleClick}) {
             <div><input type={"email"} placeholder={'john@email.com'} name={'username'} onInput={handleChange}/></div>
             <div><input type={'password'} placeholder={'*************'} name={'password'} onInput={handleChange}/></div>
             <div>
-                <button className={'btn-filled'} onClick={handleClick}>LOGIN</button>
+             <button className={'btn-filled'} onClick={handleClick}>    {    !loading ? 'LOGIN' : <Loader /> }</button>
             </div>
             <div>
                 <div className={'btn-naked'}>
@@ -73,7 +87,7 @@ function Login({toggleRequestState, handleChange, handleClick}) {
     )
 }
 
-function Register({toggleRequestState, handleChange, handleClick}) {
+function Register({toggleRequestState, handleChange, handleClick , loading}) {
     return (
         <div className={'register-wrapper '}>
             <div className="brand-logo"></div>
@@ -87,7 +101,7 @@ function Register({toggleRequestState, handleChange, handleClick}) {
             <div className={'input'}><input type={'tel'} placeholder={'989988198'} name={'contact'}
                                             onInput={handleChange}/></div>
             <div>
-                <button className={'btn-filled'} onClick={handleClick}>REGISTER</button>
+                <button className={'btn-filled'} onClick={handleClick}>   { !loading ? 'REGISTER' : <Loader /> }</button>
             </div>
             <div>
                 <div className={'btn-naked'}>

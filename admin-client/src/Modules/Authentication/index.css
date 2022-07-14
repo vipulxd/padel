@@ -8,9 +8,9 @@
 }
 
 .wrapper {
-    transform: translateY(30%);
-    height: 50vh;
-    width:30vw;
+    transform: translateY(10%);
+    height: 600px;
+    width:400px;
     margin:0 auto;
 }
 .register-wrapper{

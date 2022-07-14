@@ -2,17 +2,23 @@ import React, {useEffect, useState} from 'react'
 import {getAgentInAssociatedToAdmin} from "../../../Api";
 import './index.css'
 import Dropdown from 'react-bootstrap/Dropdown';
+import Loader from "../../../Components/Loader";
 
 export const UserSelector = ({setCurrrentAgent, setDefinedDate}) => {
     const [agents, setAgents] = useState([{name: '', agent_id: ''}])
     const [selectedAgent, setSelectedAgent] = useState('')
+    const [loading,setLoading] =  useState(true);
     useEffect(() => {
-            getAgentInAssociatedToAdmin().then(
-                d => {
-                    setSelectedAgent(d[0].name)
-                    setCurrrentAgent(d[0].agent_id)
-                    setAgents(d);
-                })
+            const token = localStorage.getItem('token')
+            if (token) {
+                getAgentInAssociatedToAdmin().then(
+                    d => {
+                        setSelectedAgent(d[0].name);
+                        setCurrrentAgent(d[0].agent_id);
+                        setAgents(d);
+                        setLoading(false);
+                    })
+            }
         }
         , [])
 
@@ -28,7 +34,7 @@ export const UserSelector = ({setCurrrentAgent, setDefinedDate}) => {
                     <div>
                         <Dropdown>
                             <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                                {selectedAgent}
+                                { !loading ? selectedAgent : <Loader />}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>

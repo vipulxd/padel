@@ -16,6 +16,7 @@ export const UserMap = ({userId, zoom, report, agentId, date}) => {
         from: new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
         to: new Date(new Date().setHours(23, 59, 59, 999)).toISOString()
     });
+    const [loading ,setLoading] = useState(true);
     const [lastOccurance, setlastOccurance] = useState([{latitude: 0, longitude: 0}]);
     const [polylinePoints, setPolylinePoints] = useState([{
         from_latitude: 0,
@@ -24,18 +25,22 @@ export const UserMap = ({userId, zoom, report, agentId, date}) => {
         to_longitude: 0
     }])
     const makeAPICall = async () => {
-        try {
-            userId && getAgentLocationByid(userId, timeState.from, timeState.to).then(data => {
-                if (data.length > 0) {
-                    setlastOccurance([{
-                        latitude: data[data.length - 1].latitude,
-                        longitude: data[data.length - 1].longitude
-                    }])
-                    drawPolyline(data)
-                }
-            })
-        } catch (e) {
-        }
+            try {
+                userId && report && getAgentLocationByid(userId, timeState.from, timeState.to).then(data => {
+                    if (data.length > 0) {
+                        setlastOccurance([{
+                            latitude: data[data.length - 1].latitude,
+                            longitude: data[data.length - 1].longitude
+                        }])
+                        drawPolyline(data)
+                    }
+                    setLoading(false)
+                })
+                !report && (
+                    setLoading(false)
+            )
+            } catch (e) {
+            }
     }
 
     /**
@@ -60,13 +65,13 @@ export const UserMap = ({userId, zoom, report, agentId, date}) => {
      * Format date defined
      */
     function redefineDate() {
-        setTimeState({
-            from: new Date(new Date(date).setHours(0, 0, 0, 0)).toISOString(),
-            to: new Date(new Date(date).setHours(23, 59, 59, 999)).toISOString()
-        });
+       if(date) {
+           setTimeState({
+               from: new Date(new Date(date).setHours(0, 0, 0, 0)).toISOString(),
+               to: new Date(new Date(date).setHours(23, 59, 59, 999)).toISOString()
+           });
+       }
     }
-
-
     useEffect(() => {
         setPolylinePoints([])
         makeAPICall()
@@ -74,7 +79,7 @@ export const UserMap = ({userId, zoom, report, agentId, date}) => {
     }, [userId, agentId, date])
     return (
         <>
-            {lastOccurance[0].latitude !== 0 && (
+            { !loading  && (
                 <MapContainer
                     center={{lat: Number(lastOccurance[0].latitude), lng: Number(lastOccurance[0].longitude)}}
                     zoom={zoom}
@@ -84,15 +89,17 @@ export const UserMap = ({userId, zoom, report, agentId, date}) => {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
+                    { report &&
                     <Polyline
                         positions={polylinePoints}
                         pathOptions={polyline_options}/>
 
                     }
                     {
-                        polylinePoints.length > 0 && polylinePoints.map((item, index) => (
+                       !loading && polylinePoints.map((item, index) => (
                             <Marker key={index} position={{lat: item[0], lng: item[1]}} icon={newicon}/>
                         ))
+                    }
                     }
                 </MapContainer>
             )

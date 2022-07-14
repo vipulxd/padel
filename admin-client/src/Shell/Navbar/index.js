@@ -47,7 +47,7 @@ export function Navbar() {
                     ))}
                 </ul>
             </nav>
-            <div className={'lower-end'}>
+            <div className={'lower-end-img'}>
                 <img src={'/icons/logout.png'} onClick={logout}></img>
             </div>
         </div>
