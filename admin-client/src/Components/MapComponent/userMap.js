@@ -11,6 +11,8 @@ const newicon = new L.Icon({
 });
 
 export const UserMap = ({userId, zoom, report, agentId}) => {
+    const [timeState, setTimeState] =  useState({from:new Date(new Date().setHours(0, 0, 0, 0)).toISOString() ,
+        to: new Date(new Date().setHours(23, 59, 59, 999)).toISOString()});
     const [lastOccurance, setlastOccurance] = useState([{latitude: 0, longitude: 0}]);
     const [polylinePoints, setPolylinePoints] = useState([{
         from_latitude: 0,
@@ -20,7 +22,7 @@ export const UserMap = ({userId, zoom, report, agentId}) => {
     }])
     const makeAPICall = async () => {
         try {
-            userId && getAgentLocationByid(userId).then(data => {
+            userId && getAgentLocationByid(userId,timeState.from,timeState.to).then(data => {
                 setlastOccurance([{
                     latitude: data[data.length - 1].latitude,
                     longitude: data[data.length - 1].longitude

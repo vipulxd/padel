@@ -31,8 +31,8 @@ export class ApiService {
         const headers = new HttpHeaders({'x-access-token':finalToken})
         this._http.request("POST",this.url+locationApi.location, { body:coordinates, headers}).subscribe((val)=>{
             console.log(`Location ${val} is being sent to server`)
-        }, ()=> {
-
+        }, (e)=> {
+console.log(e.message)
                 this._authService.isAuthenticated.emit(false)
         })
     }

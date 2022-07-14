@@ -5,12 +5,11 @@ const ApiEnum = {
     register: '/api/admin/register',
     forgotPassword: '/api/admin/forget-password',
     agents: '/api/admin/agents',
-    agentLocation: '/api/admin/locations',
+    agentLocation: '/api/admin/location',
     agentRegister: '/api/agent/register',
 
 }
-// const baseUrl = 'https://padel-config-api0server.herokuapp.com'
-const baseUrl = 'http://localhost:2001'
+const baseUrl = 'https://padel-config-api0server.herokuapp.com'
 const token = localStorage.getItem('token')
 
 export function login(payload) {
@@ -33,9 +32,9 @@ export function createAgent(payload) {
     return axios.post(`${baseUrl}${ApiEnum.agentRegister}`, {data}, {headers: {'x-access-token': token}}).then((response) => response.data)
 }
 
-export function getAgentLocationByid(payload) {
+export function getAgentLocationByid(payload,from,to) {
     const data = payload;
-    return axios.get(`${baseUrl}${ApiEnum.agentLocation}/${data}`, {
+    return axios.get(`${baseUrl}${ApiEnum.agentLocation}/${data}/${from}/${to}`, {
         headers: {'x-access-token': token},
         data
     }).then((response => response.data))
