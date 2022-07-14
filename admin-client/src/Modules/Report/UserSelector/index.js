@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {getAgentInAssociatedToAdmin} from "../../../Api";
 import './index.css'
+import Dropdown from 'react-bootstrap/Dropdown';
+import DateTimePicker from "react-datetime-picker";
 
 export const UserSelector = ({setCurrrentAgent}) => {
     const [agents, setAgents] = useState([{name: '', agent_id: ''}])
@@ -13,20 +15,30 @@ export const UserSelector = ({setCurrrentAgent}) => {
                 })
         }
         , [])
-
+    const value =  new Date();
+    function handleChange(e){
+        console.log(e)
+    }
     return (
         <>
             <div className={'selector-wrapper'}>
                 <div className={'container-wrapper'}>
                     <div>
-                        <select defaultValue={'agents'} name={"agents"}>
-                            {agents && agents.map((item, index) => (
-                                <option key={index} value={`${item.name}`}>{item.name}</option>
-                            ))}
-                        </select>
+                        <Dropdown >
+                            <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                                Select agent
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                { agents.map(items =>(
+                                    <Dropdown.Item onClick={setCurrrentAgent(items.agent_id)}>{items.name}</Dropdown.Item>
+                                    ))
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </div>
                     <div>
-                        date-filter
+                        <DateTimePicker onChange={handleChange} value={value} />
                     </div>
                     <div>
                         <button className={'btn-filled btn-filter'}>SEARCH</button>
