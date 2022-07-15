@@ -7,6 +7,6 @@ import {UserMap} from "../../Components/MapComponent/userMap";
 export function MapModule(){
 
     return (
-       <><UserMap zoom={4} report={false}/></>
+       <><UserMap zoom={3} report={false}/></>
     )
 }

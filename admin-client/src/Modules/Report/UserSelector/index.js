@@ -4,7 +4,7 @@ import './index.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import Loader from "../../../Components/Loader";
 
-export const UserSelector = ({setCurrrentAgent, setDefinedDate}) => {
+export const UserSelector = ({setCurrrentAgent, setDefinedDate , redefineDate,makeApiCall}) => {
     const [agents, setAgents] = useState([{name: '', agent_id: ''}])
     const [selectedAgent, setSelectedAgent] = useState('')
     const [loading,setLoading] =  useState(true);
@@ -48,10 +48,10 @@ export const UserSelector = ({setCurrrentAgent, setDefinedDate}) => {
                     </div>
                     <div>
                         {/*<DateTimePicker onChange={handleChange} value={value} />*/}
-                        <input type={'date'} onChange={event => setDefinedDate(event.target.value)}/>
+                        <input type={'date'} onChange={event =>  {redefineDate(event.target.value)}}/>
                     </div>
                     <div>
-                        <button className={'btn-filled btn-filter'}>SEARCH</button>
+                        <button className={'btn-filled btn-filter'} onClick={()=>makeApiCall()}>SEARCH</button>
                     </div>
                 </div>
             </div>

@@ -7,11 +7,17 @@ const ApiEnum = {
     agents: '/api/admin/agents',
     agentLocation: '/api/admin/location',
     agentRegister: '/api/agent/register',
+    livelocations: '/api/agent/live'
 
 }
-// const baseUrl = 'https://padel-config-api0server.herokuapp.com'
-const baseUrl= 'http://localhost:2001'
+const baseUrl = 'https://padel-config-api0server.herokuapp.com'
+// const baseUrl= 'http://localhost:2001'
 
+/**
+ * Admin login
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 export function login(payload) {
     const data = {...payload}
     JSON.stringify(data)
@@ -19,6 +25,11 @@ export function login(payload) {
         response.data))
 }
 
+/**
+ * Admin register
+ * @param payload
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 export function register(payload) {
     const data = {...payload}
     JSON.stringify(data)
@@ -26,6 +37,11 @@ export function register(payload) {
         response.data)
 }
 
+/**
+ * Create Agents
+ * @param payload
+ * @returns {Promise<T>}
+ */
 export function createAgent(payload) {
     const token = localStorage.getItem('token')
     const data = {...payload};
@@ -33,6 +49,13 @@ export function createAgent(payload) {
     return axios.post(`${baseUrl}${ApiEnum.agentRegister}`, data, {headers: {'x-access-token': token}}).then((response) => response.data).catch(e=>e.message)
 }
 
+/**
+ * Get agents locations based on ID
+ * @param payload
+ * @param from
+ * @param to
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 export function getAgentLocationByid(payload, from, to) {
     const token = localStorage.getItem('token')
     const data = payload;
@@ -42,6 +65,10 @@ export function getAgentLocationByid(payload, from, to) {
     }).then((response => response.data))
 }
 
+/**
+ * Get agent associated to admin
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 export function getAgentInAssociatedToAdmin() {
     const token = localStorage.getItem('token')
 
@@ -49,4 +76,15 @@ export function getAgentInAssociatedToAdmin() {
         headers: {'x-access-token': token},
     }).then((response) => response.data)
 
+}
+
+/**
+ * Get live locations for an agent
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function getLiveLocations() {
+    const token = localStorage.getItem('token');
+    return axios.get(`${baseUrl}${ApiEnum.livelocations}`, {
+        headers: {'x-access-token': token},
+    }).then((response) => response.data)
 }
