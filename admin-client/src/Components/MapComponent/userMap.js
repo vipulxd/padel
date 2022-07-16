@@ -96,6 +96,8 @@ export const UserMap = ({
                          assignmentDetails.map((item,index)=>   <Marker key={index} position={{lat: item.latitude, lng: item['longitude']}} icon={newicon}>
                                  <Popup>
                                      { item.task_subject} {' is ' } <span style={item.status === 'PENDING'? {color:'red'}:{color:'green'}}> {item.status.toLowerCase()}</span>
+                                     { item.status !=='PENDING' && ' by '}
+                                     {item.completed_by && item.completed_by}
                                  </Popup>
                          </Marker>
                              )

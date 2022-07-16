@@ -39,6 +39,7 @@ export class ApiService {
     public  getLocationFromServer(id: number): Observable<any> {
      return this._http.request('GET',this.url)
     }
+
 }
 
 

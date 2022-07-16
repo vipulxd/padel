@@ -12,8 +12,7 @@ const ApiEnum = {
     getAllTaskApi:'/api/admin/tasks'
 
 }
-// const baseUrl = 'https://padel-config-api0server.herokuapp.com'
-const baseUrl= 'http://localhost:2001'
+const baseUrl = 'https://padel-config-api0server.herokuapp.com'
 
 /**
  * Admin login

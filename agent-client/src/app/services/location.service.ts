@@ -4,6 +4,9 @@ import {Geolocation} from '@capacitor/geolocation';
 import {ApiService} from "./api.service";
 import {AuthenticationService} from "./authentication.service";
 import {LOCATIONINFO, LOCATIONRESPONSE} from "../interfaces/interfaces";
+import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
+import {environment} from "../../environments/environment";
+import {locationApi} from "../enums/enum";
 
 @Injectable({
     providedIn: 'root',
@@ -22,10 +25,12 @@ export class LocationService {
     // internal locations fetched from coordinates
     public internalLocationInfo: LOCATIONINFO;
     private intervalSubscriber: Subscription = new Subscription();
+    public pickupintervalSubscriber : Subscription = new Subscription();
     private loggerSubscriber: Subscription = new Subscription();
     private isLoggedIn : boolean ;
     constructor(private _api: ApiService,
-                private _authservice : AuthenticationService
+                private _authservice : AuthenticationService,
+                private _http:HttpClient
     ) {
         this._authservice.isAuthenticated.subscribe(val=>{
             this.isLoggedIn = val;
@@ -75,6 +80,12 @@ export class LocationService {
 
     }
 
+  public getPickupLocation() : Observable<any> {
+    console.log('awdadwada')
+      const finalToken = localStorage.getItem('token')
+    const headers = new HttpHeaders({'x-access-token':finalToken})
+    return this._http.request('GET',environment.developement_backend_url+locationApi.pickup,{headers})
+  }
     public async sendInitialLocationToServer(coords: LOCATIONINFO) {
         this.previousLocationInfo = coords;
         this._api.sendLocationToServer(coords)
@@ -143,6 +154,14 @@ export class LocationService {
         );
     }
 
+    public fetchPickupLocations():void {
+      this.pickupintervalSubscriber = interval(60000).subscribe(()=>
+      this.getPickupLocation()
+      )
+    }
+    public stopFetchPick():void{
+      this.pickupintervalSubscriber.unsubscribe()
+    }
     public stopRealTimeLocationUpdates(): void {
         this.loggerSubscriber.unsubscribe()
     }
@@ -154,7 +173,16 @@ export class LocationService {
         this.isUpdatingLocation = false;
         this.intervalSubscriber.unsubscribe();
     }
-
+  public updateTaskStatus(id:string,status:string){
+    const finalToken = localStorage.getItem('token')
+    const headers = new HttpHeaders({'x-access-token':finalToken})
+    const data = {status}
+    JSON.stringify(data)
+    this._http.request('POST',environment.developement_backend_url+locationApi.updateStatus+id,{headers,body :data})
+      .subscribe(val=>{
+        console.log(val)
+      })
+  }
 }
 
 
