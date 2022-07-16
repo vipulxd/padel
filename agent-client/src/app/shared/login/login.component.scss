@@ -1,0 +1,45 @@
+.login-component-wrapper {
+  z-index: 11111 !important;
+  position: absolute;
+  top: 0 !important;
+  margin: 100px 10px;
+  height:50%;
+  min-height: 150px !important;
+}
+.wrapper{
+
+  height:100%;
+  margin:0% auto;
+  padding:30px;
+  width:100%;
+  display: flex;
+align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.logo{
+  height:100px !important;
+  width:100px !important;
+  min-height:100px;
+  border-radius: 10px !important;
+  margin:0px;
+}
+.logo-image{
+  border-radius: 10px;
+  height:100%;
+  width:100%;
+}
+
+.input-label{
+  height: 40px;
+  width: 69vw;
+  text-align: center;
+  border:none;
+  background: transparent;
+  border-radius: 10px;
+
+}
+
+.username {
+  margin: 10px 0px;
+}

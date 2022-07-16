@@ -1,0 +1,173 @@
+@import url("~leaflet/dist/leaflet.css");
+
+body {
+  margin: 0px;
+    font-family: Baskerville, cursive;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+}
+*{
+    margin :0px;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100vh;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+input {
+    width: 18px;
+    height: 12px;
+    margin-top:4px;
+    margin-right: 5px;
+    box-shadow: unset;
+    min-height: unset;
+}
+
+button {
+
+}
+
+input {
+    caret-color: #db7a69;
+}
+a{
+    text-decoration: none;
+    list-style: none !important;
+}
+ul{
+    list-style: none;padding: 0;
+    list-style-type: none;
+}
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #ecf0f3;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    place-items: center;
+    overflow: hidden;
+}
+
+.container {
+    position: relative;
+    width: 350px;
+    height: 550px;
+    border-radius: 20px;
+    padding: 40px;
+    box-sizing: border-box;
+    background: #ecf0f3;
+    box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+}
+
+.brand-logo {
+    height: 100px;
+    width: 100px;
+    background: url("./Icons/brandlogo.png") no-repeat;
+    background-size: cover;
+    margin: 0 auto;
+    border-radius: 50%;
+    box-sizing: border-box;
+    box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
+}
+
+.brand-title {
+    margin-top: 5px;
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: #db7a69;
+    letter-spacing: 1px;
+}
+
+.inputs {
+    text-align: left;
+    margin-top: 30px;
+}
+
+label, input, button {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+}
+
+label {
+    margin-bottom: 4px;
+}
+
+label:nth-of-type(2) {
+    margin-top: 12px;
+}
+
+input::placeholder {
+    color: gray;
+}
+
+input {
+    background: #ecf0f3;
+    padding: 10px;
+    padding-left: 20px;
+    height: 50px;
+    font-size: 14px;
+    border-radius: 50px;
+    box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+}
+
+.btn-filled {
+    color: white;
+    margin-top: 20px;
+    background: #db7a69;
+    height: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 900;
+    box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+    transition: 0.5s;
+}
+
+button:hover {
+    box-shadow: none;
+}
+
+
+
+
+.box-shadow{
+    box-shadow:
+            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+            0 12.5px 10px rgba(0, 0, 0, 0.06),
+            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+            0 100px 80px rgba(0, 0, 0, 0.12)
+;
+    height:100%;
+    width: 100%;
+    background: rgba(229, 226, 226, 0.84);
+    border-radius: 5px;
+    padding:20px;
+}
+select {
+  appearance: none;
+  text-align: center;
+  border-radius: 4px;
+  background-color: white;
+  border: none;
+  padding: 0 1em 0 0;
+  margin: 0;
+  width: 150px;
+  font-family: inherit;
+  font-size: large;
+  font-weight: bold;
+  cursor: inherit;
+  line-height: inherit;
+}
