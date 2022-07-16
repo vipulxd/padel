@@ -43,7 +43,7 @@
         <div class="select-body">
           <select *ngIf="points.status != 'COMPLETED'" name="Status" id="status">
             <option *ngIf="points.status === 'PENDING'" value="Task status"></option>
-            <option value="IN PROGRESS" *ngIf="points.status != 'PENDING' "
+            <option value="IN PROGRESS" *ngIf="points.status == 'PENDING' "
                     (click)="updateStatus(points.task_id,$event)">IN PROGRESS
             </option>
             <option value="COMPLETED" *ngIf="points.status  != 'PENDING'"
