@@ -27,23 +27,22 @@ export function Report() {
         setSelectedAgentId(id)
     }
     const makeAPICall = async () => {
+        setLoading(true)
         try {
             selectedAgentId  && getAgentLocationByid(selectedAgentId, timeState.from, timeState.to).then(data => {
                 if (data.length > 0) {
                     setlastOccurance([{
-                        latitude: data[data.length - 1].latitude,
+                        latitude: data[data.length -1].latitude,
                         longitude: data[data.length - 1].longitude
                     }])
 
                 }
-                setData(date)
+                setData(data)
                 drawPolyline(data)
                 setLoading(false)
             })
-            !loading && (
-                setLoading(false)
-            )
         } catch (e) {
+        setLoading(false)
         }
     }
 
@@ -60,8 +59,9 @@ export function Report() {
     },[selectedAgentId])
     function drawPolyline(data) {
         let points = [];
+        setPolylinePoints([])
         if ( data && data.length > 0) {
-            for (let i = 0; i < data.length - 1; i++) {
+            for (let i = 0; i < data.length; i++) {
                 points.push(
                     [Number(data[i].latitude),
                         Number(data[i].longitude)]
@@ -72,8 +72,8 @@ export function Report() {
     }
     return (
         <>
-            <UserSelector setCurrrentAgent={setCurrrentAgent} setDefinedDate={setDate} redefineDate={redefineDate} makeApiCall={makeAPICall}/>
-            <UserMap zoom={16} userId={selectedAgentId} loading={loading} report={true} date={date} data={data} lastOccurance={lastOccurance} setPolylinePoints={setPolylinePoints} polylinePoints={polylinePoints} />
+            <UserSelector setCurrrentAgent={setCurrrentAgent} setDefinedDate={setDate} redefineDate={redefineDate} makeApiCall={makeAPICall} loading={loading}/>
+            <UserMap zoom={18} userId={selectedAgentId} loading={loading} reportModule={true} date={date} data={data} lastOccurance={lastOccurance} setPolylinePoints={setPolylinePoints} polylinePoints={polylinePoints} />
         </>
     )
 }

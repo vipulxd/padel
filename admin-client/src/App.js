@@ -3,11 +3,7 @@ import React from "react"
 import {Shell} from './Shell'
 import {Routes, Route} from "react-router";
 import {Navigate} from "react-router";
-import {Authentication} from "./Modules/Authentication";
-import {MapModule} from "./Modules/MapModule";
-import {AgentModule} from "./Modules/AgentModule";
-import {Report} from "./Modules/Report";
-import {Preview} from "./Modules/Preview";
+import {AgentModule, Report ,MapModule,Preview,Pickup,AuthenticationModule} from "./Modules";
 
 
 function App() {
@@ -16,14 +12,15 @@ function App() {
 
         <Routes>
             <Route path="/" element={<Navigate to="/preview"/>}/>
-            <Route path="/dashboard/" element={<Shell/>}>
+            <Route path="/dashboard/" element={<Shell/> }>
                 <Route path="report" element={<Report/>}/>
                 <Route path="agents" element={<AgentModule/>}/>
                 <Route path="map" element={<MapModule/>}/>
+                <Route path="pickup" element={<Pickup />} />
             </Route>
             <Route path={"preview"}
                    element={<Preview/>}/>
-            <Route path="/authentication" element={<Authentication/>}/>
+            <Route path="/authentication" element={<AuthenticationModule/>}/>
             <Route path="*" element={<Navigate to="/preview"/>}/>
         </Routes>
 

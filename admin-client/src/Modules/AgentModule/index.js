@@ -3,6 +3,7 @@ import './index.css'
 import {AgentList} from "./AgentList";
 import {useEffect, useState} from "react";
 import {createAgent, getAgentInAssociatedToAdmin} from "../../Api";
+import Loader from "../../Components/Loader";
 
 export function AgentModule() {
     const [data , setData] = useState([])
@@ -37,8 +38,10 @@ export function AgentModule() {
             </b></h2>
             <div className={'wrapper-container'}>
                 <div>
-                    <AgentList data={data}/>
-                </div>
+                    {
+                     data.length > 0  ?  <AgentList data={data}/> : <Loader />
+                    }
+                    </div>
                 <div className={''}>
                     <div>
                         <CreateAgent handleChange={handleChange} handleSubmit={handleSubmit} info={info}/>

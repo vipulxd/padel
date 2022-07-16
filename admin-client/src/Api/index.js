@@ -7,11 +7,12 @@ const ApiEnum = {
     agents: '/api/admin/agents',
     agentLocation: '/api/admin/location',
     agentRegister: '/api/agent/register',
-    livelocations: '/api/agent/live'
+    livelocations: '/api/admin/live',
+    assignTaskApi : '/api/admin/task'
 
 }
-const baseUrl = 'https://padel-config-api0server.herokuapp.com'
-// const baseUrl= 'http://localhost:2001'
+// const baseUrl = 'https://padel-config-api0server.herokuapp.com'
+const baseUrl= 'http://localhost:2001'
 
 /**
  * Admin login
@@ -87,4 +88,29 @@ export function getLiveLocations() {
     return axios.get(`${baseUrl}${ApiEnum.livelocations}`, {
         headers: {'x-access-token': token},
     }).then((response) => response.data)
+}
+
+/**
+ * Assign task to an agent for a given location
+ * @param agent_id
+ * @param latitude
+ * @param longitude
+ * @param task_subject
+ * @param task_message
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function assignTaskToAnAgent(agent_id, latitude, longitude, task_subject, task_message) {
+    console.log(agent_id)
+    const token = localStorage.getItem('token')
+    const data = {
+        latitude, longitude, task_subject, task_message
+    }
+    JSON.stringify(data)
+    if (token) {
+        return axios.post(`${baseUrl}${ApiEnum.assignTaskApi}/${agent_id}`,
+            data
+        , {
+            headers: {'x-access-token': token}
+        }).then((response) => response.data)
+    }
 }

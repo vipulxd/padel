@@ -20,6 +20,11 @@ export function Navbar() {
             path: 'agents',
             text: "Agents",
             iconsUrl: 'insurance.png'
+        },
+        {
+            path : 'pickup',
+            text: 'Pickup',
+            iconsUrl: 'truck-image.png'
         }
 
     ]

@@ -4,7 +4,7 @@ import {login, register} from '../../Api'
 import {useNavigate} from "react-router";
 import Loader from "../../Components/Loader";
 
-export function Authentication() {
+export function AuthenticationModule() {
     let navigate  = useNavigate();
     const [request, setRequest] = useState('LOGIN')
     const [authProps, setAuthProps] = useState({username: '', password: '', uname: '', contact: ''})
