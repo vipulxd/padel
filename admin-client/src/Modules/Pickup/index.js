@@ -4,7 +4,7 @@ import {UserMap} from "../../Components/MapComponent/userMap";
 import {Card, Form, Tab} from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import Loader from "../../Components/Loader";
-import {assignTaskToAnAgent, getAgentInAssociatedToAdmin} from "../../Api";
+import {assignTaskToAnAgent, getAgentInAssociatedToAdmin, getAllTasks} from "../../Api";
 import Button from "react-bootstrap/Button";
 
 
@@ -14,6 +14,7 @@ export function Pickup() {
     const [agent_id , setAgent_id] =  useState('')
     const [task_subject, setTaskSubject] =  useState('')
     const [task_message,setTaskMessage] =  useState('')
+    const [assignmentDetails,setAssignmentDetails] = useState([])
     const [sending,setSending]  =  useState(false)
     function setCoords(coords) {
         setCoordinates(coords)
@@ -33,11 +34,15 @@ export function Pickup() {
             }
         })
     }
-
+    useEffect(() => {
+        getAllTasks().then(response => {
+            setAssignmentDetails(response)
+        })
+},[selected])
     return (
 
         <>
-            <UserMap pickupModule={true} zoom={4} setCoordinates={setCoords}/>
+            <UserMap pickupModule={true} zoom={4} setCoordinates={setCoords} assignmentDetails={assignmentDetails}/>
             {selected && <AssignPanel sending={sending} setSelected={setSelected} setAgent_id={setAgent_id} assignTask={assignTask} setTaskSubject={setTaskSubject} setTaskMessage={setTaskMessage}/>}
         </>
     )

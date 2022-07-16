@@ -8,11 +8,12 @@ const ApiEnum = {
     agentLocation: '/api/admin/location',
     agentRegister: '/api/agent/register',
     livelocations: '/api/admin/live',
-    assignTaskApi : '/api/admin/task'
+    assignTaskApi : '/api/admin/task',
+    getAllTaskApi:'/api/admin/tasks'
 
 }
-const baseUrl = 'https://padel-config-api0server.herokuapp.com'
-// const baseUrl= 'http://localhost:2001'
+// const baseUrl = 'https://padel-config-api0server.herokuapp.com'
+const baseUrl= 'http://localhost:2001'
 
 /**
  * Admin login
@@ -113,4 +114,10 @@ export function assignTaskToAnAgent(agent_id, latitude, longitude, task_subject,
             headers: {'x-access-token': token}
         }).then((response) => response.data)
     }
+}
+
+export function getAllTasks(){
+    const token = localStorage.getItem('token')
+    return axios.get(`${baseUrl}${ApiEnum.getAllTaskApi}`,{headers :{'x-access-token':token}})
+        .then((response)=>response.data)
 }

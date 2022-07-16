@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react'
-import {MapContainer, Marker, Polyline, TileLayer, useMapEvents} from "react-leaflet";
+import {MapContainer, Marker, Polyline, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import marker from '../../Icons/locationMarker.svg'
 import L from 'leaflet';
-import { useMap } from 'https://cdn.esm.sh/react-leaflet/hooks'
+import {useMap} from 'https://cdn.esm.sh/react-leaflet/hooks'
+
 const newicon = new L.Icon({
     iconUrl: marker,
-    iconSize: [20, 20]
+    iconSize: [35, 35]
 });
 
 export const UserMap = ({
@@ -19,10 +20,12 @@ export const UserMap = ({
                             polylinePoints,
                             loading,
                             pickupModule,
-                            setCoordinates
+                            setCoordinates,
+                            assignmentDetails
                         }) => {
     const [center, setCenter] = useState([{latitude: 0, longitude: 0}])
     const polyline_options = {color: '#db7a69', weight: '3',};
+
     function Locator() {
         const map = useMapEvents({
             click: (l) => {
@@ -31,6 +34,7 @@ export const UserMap = ({
         })
         return null
     }
+
     return (
         <>
 
@@ -83,12 +87,20 @@ export const UserMap = ({
                         zoom={zoom}
                         style={{height: "100vh", width: "100vw"}}
                         scrollWheelZoom={true}>
-                        <Locator />
+                        <Locator/>
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                    </MapContainer>
+                        {
+                         assignmentDetails.map((item,index)=>   <Marker key={index} position={{lat: item.latitude, lng: item['longitude']}} icon={newicon}>
+                                 <Popup>
+                                     { item.task_subject} {' is ' } <span style={item.status === 'PENDING'? {color:'red'}:{color:'green'}}> {item.status.toLowerCase()}</span>
+                                 </Popup>
+                         </Marker>
+                             )
+                        }
+                        </MapContainer>
                 )
             }
         </>
