@@ -16,6 +16,7 @@ export function Pickup() {
     const [task_message,setTaskMessage] =  useState('')
     const [assignmentDetails,setAssignmentDetails] = useState([])
     const [sending,setSending]  =  useState(false)
+    const [taskDate ,setTaskDate] = useState(new Date().toLocaleDateString('zh-Hans-CN',{ year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('/','-')+'T01:00:00.000Z')
     function setCoords(coords) {
         setCoordinates(coords)
         if (coords) {
@@ -35,7 +36,7 @@ export function Pickup() {
         })
     }
     useEffect(() => {
-        getAllTasks().then(response => {
+        getAllTasks(taskDate).then(response => {
             setAssignmentDetails(response)
         })
 },[selected])
@@ -50,7 +51,6 @@ export function Pickup() {
 
 function AssignPanel({sending,setSelected,setAgent_id,assignTask,setTaskSubject,setTaskMessage}) {
     const [loading, setloading] = useState(true)
-
     const [selectedAgent, setSelectedAgent] = useState('')
     const [agents, setAgents] = useState([])
     useEffect(() => {

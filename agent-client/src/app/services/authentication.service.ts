@@ -14,6 +14,7 @@ export class AuthenticationService {
     public errorString : EventEmitter<string> = new EventEmitter<string>();
     public name : string ;
     public isLoading : EventEmitter<boolean> =  new EventEmitter<boolean>();
+    public show : EventEmitter<boolean> = new EventEmitter<boolean>();
     constructor(private http: HttpClient
                 ) {
     }
@@ -31,6 +32,7 @@ export class AuthenticationService {
             this.storeTokenInLocalStorage(response.token,response.name)
             this.isAuthenticated.emit(true)
             this.isLoading.emit(false)
+            this.show.emit(false)
         }, (err) => {
            this.errorString.emit(err.error.message)
             this.isLoading.emit(false)

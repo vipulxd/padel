@@ -2,13 +2,18 @@ import React, {useEffect, useState} from 'react'
 import {MapContainer, Marker, Polyline, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import marker from '../../Icons/locationMarker.svg'
+import pickupMarker from '../../Icons/truck-image.png'
 import L from 'leaflet';
-import {useMap} from 'https://cdn.esm.sh/react-leaflet/hooks'
+import {pickStatusEnum} from "../../Utils/enums";
 
 const newicon = new L.Icon({
     iconUrl: marker,
     iconSize: [35, 35]
 });
+const pickupImage = new L.Icon({
+    iconUrl : pickupMarker ,
+    iconSize : [35,35]
+})
 
 export const UserMap = ({
                             data,
@@ -93,10 +98,10 @@ export const UserMap = ({
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
                         {
-                         assignmentDetails.map((item,index)=>   <Marker key={index} position={{lat: item.latitude, lng: item['longitude']}} icon={newicon}>
+                         assignmentDetails && assignmentDetails.map((item,index)=>   <Marker key={index} position={{lat: item.latitude, lng: item['longitude']}} icon={pickupImage}>
                                  <Popup>
-                                     { item.task_subject} {' is ' } <span style={item.status === 'PENDING'? {color:'red'}:{color:'green'}}> {item.status.toLowerCase()}</span>
-                                     { item.status !=='PENDING' && ' by '}
+                                     { item.task_subject} {' is ' } <span style={item.status === pickStatusEnum.pending ? {color:'red'}:{color:'green'}}> {item.status.toLowerCase()}</span>
+                                     { item.status !== pickStatusEnum.pending && ' by '}
                                      {item.completed_by && item.completed_by}
                                  </Popup>
                          </Marker>

@@ -9,7 +9,7 @@ const ApiEnum = {
     agentRegister: '/api/agent/register',
     livelocations: '/api/admin/live',
     assignTaskApi : '/api/admin/task',
-    getAllTaskApi:'/api/admin/tasks'
+    getAllTaskApi:'/api/admin/tasks/'
 
 }
 const baseUrl = 'https://padel-config-api0server.herokuapp.com'
@@ -24,6 +24,9 @@ export function login(payload) {
     JSON.stringify(data)
     return axios.post(`${baseUrl}${ApiEnum.login}`, data).then((response) => (
         response.data))
+        .catch(e=>{
+            handleError(e.response.status)
+        })
 }
 
 /**
@@ -36,6 +39,9 @@ export function register(payload) {
     JSON.stringify(data)
     return axios.post(`${baseUrl}${ApiEnum.register}`, data).then(response =>
         response.data)
+        .catch(e=>{
+            handleError(e.response.status)
+        })
 }
 
 /**
@@ -48,6 +54,9 @@ export function createAgent(payload) {
     const data = {...payload};
     JSON.stringify(data)
     return axios.post(`${baseUrl}${ApiEnum.agentRegister}`, data, {headers: {'x-access-token': token}}).then((response) => response.data).catch(e=>e.message)
+        .catch(e=>{
+            handleError(e.response.status)
+        })
 }
 
 /**
@@ -64,6 +73,9 @@ export function getAgentLocationByid(payload, from, to) {
         headers: {'x-access-token': token},
         data
     }).then((response => response.data))
+        .catch(e=>{
+            handleError(e.response.status)
+        })
 }
 
 /**
@@ -76,6 +88,9 @@ export function getAgentInAssociatedToAdmin() {
     return axios.get(`${baseUrl}${ApiEnum.agents}`, {
         headers: {'x-access-token': token},
     }).then((response) => response.data)
+        .catch(e=>{
+            handleError(e.response.status)
+        })
 
 }
 
@@ -88,6 +103,9 @@ export function getLiveLocations() {
     return axios.get(`${baseUrl}${ApiEnum.livelocations}`, {
         headers: {'x-access-token': token},
     }).then((response) => response.data)
+        .catch(e=>{
+            handleError(e.response.status)
+        })
 }
 
 /**
@@ -100,7 +118,6 @@ export function getLiveLocations() {
  * @returns {Promise<AxiosResponse<any>>}
  */
 export function assignTaskToAnAgent(agent_id, latitude, longitude, task_subject, task_message) {
-    console.log(agent_id)
     const token = localStorage.getItem('token')
     const data = {
         latitude, longitude, task_subject, task_message
@@ -112,11 +129,32 @@ export function assignTaskToAnAgent(agent_id, latitude, longitude, task_subject,
         , {
             headers: {'x-access-token': token}
         }).then((response) => response.data)
+            .catch(e=>{
+                handleError(e.response.status)
+            })
     }
 }
 
-export function getAllTasks(){
+export function getAllTasks(created_after){
+    // created_after is the date after which you can see all the pickup locations assigned by the admin user to their agents .
+
     const token = localStorage.getItem('token')
-    return axios.get(`${baseUrl}${ApiEnum.getAllTaskApi}`,{headers :{'x-access-token':token}})
+    return axios.get(`${baseUrl}${ApiEnum.getAllTaskApi}${created_after}`,{headers :{'x-access-token':token}})
         .then((response)=>response.data)
+        .catch(e=>{
+            handleError(e.response.status)
+        })
+}
+
+/**
+ * Based on server response status we can easily show snackbar or show some other function to the user
+ * @param status
+ */
+function handleError(status){
+    switch(status){
+    //Remove auth token this will redirect the page to authentication page
+        case 401 : {
+            localStorage.removeItem('token');
+        }
+    }
 }

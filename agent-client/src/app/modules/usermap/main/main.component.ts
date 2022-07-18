@@ -22,15 +22,15 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public icon = {
     scaledSize: {
-      width: 30,
-      height: 30,
+      width: 45,
+      height: 45,
     },
     url: './../../assets/icons/locationMarker.svg',
   };
   public pickupLocationsImage = {
     scaledSize: {
-      width: 30,
-      height: 30
+      width: 40,
+      height: 40
     },
     url: './../../assets/icons/pickup.png'
   }
@@ -71,8 +71,10 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
      * Get locations
      */
     this.locationService.getPickupLocation().subscribe(val => {
-      console.log(val)
       this.pickupLocations = val;
+    },(e)=>{
+        this._authservice.show.emit(true);
+        this._authservice.isAuthenticated.emit(false)
     })
   }
 

@@ -1,12 +1,13 @@
-import {Injectable, EventEmitter} from '@angular/core';
-import {Subscription, interval, Observable} from 'rxjs';
+import {EventEmitter, Injectable} from '@angular/core';
+import {interval, Observable, Subscription} from 'rxjs';
 import {Geolocation} from '@capacitor/geolocation';
 import {ApiService} from "./api.service";
 import {AuthenticationService} from "./authentication.service";
 import {LOCATIONINFO, LOCATIONRESPONSE} from "../interfaces/interfaces";
-import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {locationApi} from "../enums/enum";
+import {Storage} from "@capacitor/storage";
 
 @Injectable({
     providedIn: 'root',
@@ -25,20 +26,29 @@ export class LocationService {
     // internal locations fetched from coordinates
     public internalLocationInfo: LOCATIONINFO;
     private intervalSubscriber: Subscription = new Subscription();
-    public pickupintervalSubscriber : Subscription = new Subscription();
+    public pickupintervalSubscriber: Subscription = new Subscription();
     private loggerSubscriber: Subscription = new Subscription();
-    private isLoggedIn : boolean ;
+    public AUTHTOKEN: string = localStorage.getItem('token')
+    private isLoggedIn: boolean;
+    public show : EventEmitter<boolean> =  new EventEmitter<boolean>()
     constructor(private _api: ApiService,
-                private _authservice : AuthenticationService,
-                private _http:HttpClient
+                private _authservice: AuthenticationService,
+                private _http: HttpClient
     ) {
-        this._authservice.isAuthenticated.subscribe(val=>{
+        this._authservice.isAuthenticated.subscribe(val => {
             this.isLoggedIn = val;
         })
+        this.AUTHTOKEN = localStorage.getItem('token');
+        if (this.AUTHTOKEN == null) {
+            Storage.get({key: 'token'}).then(finalToken => {
+                // @ts-ignore
+                this.AUTHTOKEN = finalToken
+            })
+        }
     }
 
     async getPosition() {
-      this.isLoggedIn &&  await Geolocation.getCurrentPosition().then((pos) => {
+        this.isLoggedIn && await Geolocation.getCurrentPosition().then((pos) => {
             if (pos) {
                 this.currentLocationInfo = {
                     lat: pos.coords.latitude,
@@ -63,16 +73,16 @@ export class LocationService {
                         );
 
                         if (distanceFromPrevious >= 60) {
-                                this._api.sendLocationToServer(this.currentLocationInfo)
-                                this.coordinates.emit(this.currentLocationInfo);
-                                this.previousLocationInfo = this.currentLocationInfo;
+                            this._api.sendLocationToServer(this.currentLocationInfo)
+                            this.coordinates.emit(this.currentLocationInfo);
+                            this.previousLocationInfo = this.currentLocationInfo;
                         } else {
                             console.log(
                                 `Agent travelled ${distanceFromPrevious}M discarding with accuracy ${pos.coords.accuracy}`
                             );
                         }
                     }
-                }else {
+                } else {
                     this.sendInitialLocationToServer(this.currentLocationInfo)
                 }
             }
@@ -80,12 +90,18 @@ export class LocationService {
 
     }
 
-  public getPickupLocation() : Observable<any> {
-    console.log('awdadwada')
-      const finalToken = localStorage.getItem('token')
-    const headers = new HttpHeaders({'x-access-token':finalToken})
-    return this._http.request('GET',environment.developement_backend_url+locationApi.pickup,{headers})
-  }
+    public getPickupLocation(): Observable<any> {
+        let fromDate = new Date().toLocaleDateString('zh-Hans-CN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }).replaceAll('/', '-')
+        fromDate = fromDate + 'T01:00:00.000Z';
+        const headers = new HttpHeaders({'x-access-token': this.AUTHTOKEN})
+        return this._http.request('GET', `${environment.developement_backend_url}${locationApi.pickup}${fromDate}`, {headers})
+
+    }
+
     public async sendInitialLocationToServer(coords: LOCATIONINFO) {
         this.previousLocationInfo = coords;
         this._api.sendLocationToServer(coords)
@@ -93,7 +109,7 @@ export class LocationService {
 
     public getCurrentLocation() {
         this.isLoading.emit(true);
-       this.isLoggedIn &&  Geolocation.getCurrentPosition()
+        this.isLoggedIn && Geolocation.getCurrentPosition()
             .then((pos) => {
 
                 this.currentLocationInfo = {
@@ -123,7 +139,7 @@ export class LocationService {
         })
     }
 
-   private static distance(lat1: number, lon1: number, lat2: number, lon2: number) {
+    private static distance(lat1: number, lon1: number, lat2: number, lon2: number) {
         if (lat1 == lat2 && lon1 == lon2) {
             return 0;
         } else {
@@ -154,14 +170,16 @@ export class LocationService {
         );
     }
 
-    public fetchPickupLocations():void {
-      this.pickupintervalSubscriber = interval(60000).subscribe(()=>
-      this.getPickupLocation()
-      )
+    public fetchPickupLocations(): void {
+        this.pickupintervalSubscriber = interval(60000).subscribe(() =>
+            this.getPickupLocation()
+        )
     }
-    public stopFetchPick():void{
-      this.pickupintervalSubscriber.unsubscribe()
+
+    public stopFetchPick(): void {
+        this.pickupintervalSubscriber.unsubscribe()
     }
+
     public stopRealTimeLocationUpdates(): void {
         this.loggerSubscriber.unsubscribe()
     }
@@ -173,16 +191,16 @@ export class LocationService {
         this.isUpdatingLocation = false;
         this.intervalSubscriber.unsubscribe();
     }
-  public updateTaskStatus(id:string,status:string){
-    const finalToken = localStorage.getItem('token')
-    const headers = new HttpHeaders({'x-access-token':finalToken})
-    const data = {status}
-    JSON.stringify(data)
-    this._http.request('POST',environment.developement_backend_url+locationApi.updateStatus+id,{headers,body :data})
-      .subscribe(val=>{
-        console.log(val)
-      })
-  }
+
+    public updateTaskStatus(id: string, status: string) {
+        const headers = new HttpHeaders({'x-access-token': this.AUTHTOKEN})
+        const data = {status}
+        JSON.stringify(data)
+        this._http.request('POST', environment.developement_backend_url + locationApi.updateStatus + id, {
+            headers,
+            body: data
+        })
+    }
 }
 
 

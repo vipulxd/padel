@@ -2,7 +2,7 @@
   z-index: 11111 !important;
   position: absolute;
   top: 0 !important;
-  margin: 100px 10px;
+  margin: 150px 10px;
   height:50%;
   min-height: 150px !important;
 }
@@ -34,10 +34,8 @@ align-items: center;
   height: 40px;
   width: 69vw;
   text-align: center;
-  border:none;
-  background: transparent;
-  border-radius: 10px;
-
+  border : 2px solid #db7a69;
+  border-radius: 4px;
 }
 
 .username {

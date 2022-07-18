@@ -1,8 +1,16 @@
-import {Outlet} from "react-router";
+import {Outlet, useNavigate} from "react-router";
 import {Navbar} from "./Navbar";
+import {useEffect} from "react";
 
 
 export function Shell() {
+    const navigate = useNavigate();
+    useEffect(()=>{
+        const token = localStorage.getItem('token')
+        if(!token){
+            navigate('/authentication');
+        }
+    },[])
 
     return (
         <>

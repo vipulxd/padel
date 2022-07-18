@@ -4,8 +4,13 @@ enum AUTHAPI {
 }
 enum locationApi {
     location = '/api/agent/location',
-  pickup = '/api/agent/assignments',
+  pickup = '/api/agent/assignments/',
   updateStatus = '/api/agent/task/'
 }
+enum pickupStatus {
+    pending = 'PENDING',
+    inprogress = 'IN PROGRESS',
+    completed = 'COMPLETED'
+}
 
-export {AUTHAPI,locationApi}
+export {AUTHAPI,locationApi,pickupStatus}

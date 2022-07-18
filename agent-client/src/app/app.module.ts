@@ -7,16 +7,19 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import {HttpClientModule} from "@angular/common/http";
 import { LoginComponent } from './shared/login/login.component';
+import {SnackbarComponent} from "./shared/snackbar/snackbar.component";
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    LoaderComponent,
-    LoginComponent,
+    declarations: [
+        AppComponent,
+        NavbarComponent,
+        LoaderComponent,
+        LoginComponent,
+        SnackbarComponent,
+        SnackbarComponent,
 
-  ],
+    ],
   imports: [
     BrowserModule,
       HttpClientModule,

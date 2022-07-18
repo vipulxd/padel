@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import { Observable} from "rxjs";
@@ -12,7 +12,7 @@ import {Storage} from "@capacitor/storage";
 })
 export class ApiService {
     public url: string = environment.developement_backend_url
-
+    public show : EventEmitter<boolean> =  new EventEmitter<boolean>()
     constructor(
         private _http: HttpClient,
         private _authService : AuthenticationService
@@ -33,6 +33,7 @@ export class ApiService {
             console.log(`Location ${val} is being sent to server`)
         }, (e)=> {
                 this._authService.isAuthenticated.emit(false)
+                this.show.emit(true)
         })
     }
 
