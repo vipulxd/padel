@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState} from 'react'
 import {MapContainer, Marker, Polyline, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import marker from '../../Icons/locationMarker.svg'
 import pickupMarker from '../../Icons/truck-image.png'
 import L from 'leaflet';
 import {pickStatusEnum} from "../../Utils/enums";
-
 const newicon = new L.Icon({
     iconUrl: marker,
     iconSize: [35, 35]
@@ -39,7 +38,6 @@ export const UserMap = ({
         })
         return null
     }
-
     return (
         <>
 
