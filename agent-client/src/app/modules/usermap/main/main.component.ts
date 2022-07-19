@@ -73,8 +73,10 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     this.locationService.getPickupLocation().subscribe(val => {
       this.pickupLocations = val;
     },(e)=>{
-        this._authservice.show.emit(true);
-        this._authservice.isAuthenticated.emit(false)
+        if(e.status == 401) {
+            this._authservice.show.emit(true);
+            this._authservice.isAuthenticated.emit(false)
+        }
     })
   }
 
@@ -85,8 +87,8 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  updateStatus(id: string, event: any) {
-    this.locationService.updateTaskStatus(id, event.target.value)
+  updateStatus(id: string, event: any , latitude :string ,longitude :string) {
+    this.locationService.updateTaskStatus(id, event.target.value,latitude,longitude)
   }
 
   public requestStopLocationUpdates() {

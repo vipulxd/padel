@@ -6,7 +6,7 @@ import {AuthenticationService} from "./authentication.service";
 import {LOCATIONINFO, LOCATIONRESPONSE} from "../interfaces/interfaces";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {locationApi} from "../enums/enum";
+import {locationApi, pickupStatus} from "../enums/enum";
 import {Storage} from "@capacitor/storage";
 
 @Injectable({
@@ -28,6 +28,7 @@ export class LocationService {
     private intervalSubscriber: Subscription = new Subscription();
     public pickupintervalSubscriber: Subscription = new Subscription();
     private loggerSubscriber: Subscription = new Subscription();
+    public errorString : EventEmitter<string> =  new EventEmitter<string>()
     public AUTHTOKEN: string = localStorage.getItem('token')
     private isLoggedIn: boolean;
     public show : EventEmitter<boolean> =  new EventEmitter<boolean>()
@@ -192,15 +193,26 @@ export class LocationService {
         this.intervalSubscriber.unsubscribe();
     }
 
-    public updateTaskStatus(id: string, status: string) {
+    public updateTaskStatus(id: string, status: string , lat:string , lng: string) {
+        const distance = LocationService.distance(this.currentLocationInfo.lat,this.currentLocationInfo.lng,Number(lat),Number(lng));
+        if(status == pickupStatus.completed && distance > 100){
+            console.log( 'Distance not as per rules')
+            this.show.emit(true)
+            this.errorString.emit('Distance not sufficient to update task')
+            return
+        }
+        console.log('adwdaddawd')
         const headers = new HttpHeaders({'x-access-token': this.AUTHTOKEN})
         const data = {status}
         JSON.stringify(data)
         this._http.request('POST', environment.developement_backend_url + locationApi.updateStatus + id, {
             headers,
             body: data
+        }).subscribe(val=>{
+            console.log(val)
         })
     }
+
 }
 
 

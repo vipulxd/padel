@@ -4,6 +4,7 @@ import {AuthenticationService} from "./services/authentication.service";
 // Suppress the long press gesture inside the app
 import { SuppressLongpressGesture } from 'capacitor-suppress-longpress-gesture';
 import {ApiService} from "./services/api.service";
+import {LocationService} from "./services/location.service";
 SuppressLongpressGesture.activateService();
 
 @Component({
@@ -15,7 +16,8 @@ export class AppComponent implements OnInit{
     public token : string = localStorage.getItem('token');
     public show : boolean = false;
   constructor(private _authservice : AuthenticationService,
-              private _apiService : ApiService
+              private _apiService : ApiService,
+              private _locationService : LocationService
               ) {
   }
   ngOnInit(){
@@ -25,10 +27,28 @@ export class AppComponent implements OnInit{
           this._authservice.isAuthenticated.emit(false)
       }
       this._apiService.show.subscribe(val =>{
-          console.log(val)
+          if(val){
+              setTimeout(()=>{
+                  this.show = false;
+              },5000)
+          }
           this.show =val;
       })
       this._authservice.show.subscribe(val =>{
+          if(val){
+              setTimeout(()=>{
+                  this.show = false;
+              },5000)
+          }
+          this.show = val;
+      })
+      this._locationService.show.subscribe(val=>{
+          if(val){
+              setTimeout(()=>{
+                  this.show = false;
+              }, 5000)
+
+          }
           this.show = val;
       })
     }

@@ -41,12 +41,12 @@
           {{'Message : ' + points.task_message}}
         </div>
         <div class="select-body">
-          <select *ngIf="points.status != 'COMPLETED'" name="Status" id="status" (change)="updateStatus(points.task_id,$event)">
+          <select *ngIf="points.status != 'COMPLETED'" name="Status" id="status" (change)="updateStatus(points.task_id,$event, points.latitude,points.longitude)">
             <option *ngIf="points.status === 'PENDING'" value="Task status"></option>
             <option value="IN PROGRESS" *ngIf="points.status == 'PENDING' || points.status != 'COMPLETED' "
                     >IN PROGRESS
             </option>
-            <option value="COMPLETED" *ngIf="points.status  != 'PENDING'"
+            <option value="COMPLETED" *ngIf="points.status != 'PENDING' || points.status == 'IN PROGRESS'"
                     >COMPLETED
             </option>
             }}
