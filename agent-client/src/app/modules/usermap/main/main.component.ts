@@ -4,6 +4,7 @@ import {AuthenticationService} from "../../../services/authentication.service";
 import {LOCATIONINFO} from "../../../interfaces/interfaces";
 
 
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -14,7 +15,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   public updatingLocation: boolean = false;
   public isAuthenticated: boolean;
   public pickupLocations: any;
-
+  public isConnected : boolean = true;
   constructor(private locationService: LocationService,
               private _authservice: AuthenticationService
   ) {
@@ -78,6 +79,12 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
             this._authservice.isAuthenticated.emit(false)
         }
     })
+      /**
+       * Check for internet connectivity
+       */
+      this.locationService.isConnectedToInternet.subscribe(val=>{
+          this.isConnected=val
+  });
   }
 
   public requestLocationUpdate() {

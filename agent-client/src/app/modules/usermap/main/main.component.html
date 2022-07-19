@@ -8,6 +8,10 @@
         STOP
       </button>
     </div>
+      <div class="wifi-div-connected" *ngIf="isConnected" >
+      </div>
+      <div class="wifi-div-disconnected" *ngIf="!isConnected" >
+      </div>
   </div>
 
   <agm-map

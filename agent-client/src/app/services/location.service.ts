@@ -8,6 +8,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {locationApi, pickupStatus} from "../enums/enum";
 import {Storage} from "@capacitor/storage";
+import {Network} from "@capacitor/network";
 
 @Injectable({
     providedIn: 'root',
@@ -25,6 +26,7 @@ export class LocationService {
     public previousLocationInfo: LOCATIONINFO;
     // internal locations fetched from coordinates
     public internalLocationInfo: LOCATIONINFO;
+    public isConnectedToInternet : EventEmitter<boolean> = new EventEmitter<boolean>() ;
     private intervalSubscriber: Subscription = new Subscription();
     public pickupintervalSubscriber: Subscription = new Subscription();
     private loggerSubscriber: Subscription = new Subscription();
@@ -47,8 +49,17 @@ export class LocationService {
             })
         }
     }
-
+    public  logCurrentNetworkStatus = async () => {
+        const status = await Network.getStatus();
+        if(!status.connected){
+            this.errorString.emit('No network detected')
+            this.show.emit(true)
+            this.isConnectedToInternet.emit(false);
+        }
+        this.isConnectedToInternet.emit(true)
+    };
     async getPosition() {
+        this.logCurrentNetworkStatus();
         this.isLoggedIn && await Geolocation.getCurrentPosition().then((pos) => {
             if (pos) {
                 this.currentLocationInfo = {
@@ -195,13 +206,11 @@ export class LocationService {
 
     public updateTaskStatus(id: string, status: string , lat:string , lng: string) {
         const distance = LocationService.distance(this.currentLocationInfo.lat,this.currentLocationInfo.lng,Number(lat),Number(lng));
-        if(status == pickupStatus.completed && distance > 100){
-            console.log( 'Distance not as per rules')
+        if(status == pickupStatus.completed && distance > 30){
             this.show.emit(true)
-            this.errorString.emit('Distance not sufficient to update task')
+            this.errorString.emit('Update not allowed. You are too far from destination')
             return
         }
-        console.log('adwdaddawd')
         const headers = new HttpHeaders({'x-access-token': this.AUTHTOKEN})
         const data = {status}
         JSON.stringify(data)

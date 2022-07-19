@@ -1,5 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LocationService} from "../../services/location.service";
+import {Network} from "@capacitor/network";
+
+Network.addListener('networkStatusChange', status => {
+    console.log(status)
+});
 
 @Component({
   selector: 'app-snackbar',
@@ -12,11 +17,14 @@ import {LocationService} from "../../services/location.service";
   `,
   styleUrls: ['./snackbar.component.scss']
 })
+
 export class SnackbarComponent implements OnInit {
 @Input() show : boolean;
-public errorMessage : string = 'Failed to send request! Please Login'
+public errorMessage : string = 'Failed to send request. Please Login'
 
   constructor(private locationService : LocationService) { }
+
+
 
   ngOnInit(): void {
     this.locationService.errorString.subscribe(val=>{

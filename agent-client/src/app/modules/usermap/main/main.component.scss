@@ -9,7 +9,9 @@ agm-map {
   height: 51px;
   width: 100%;
   padding: 20px;
-  text-align: center
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
 }
 .message-body{
   width:180px;
@@ -17,5 +19,20 @@ agm-map {
 .select-body{
   padding:10px;
 }
-
+.wifi-div-connected{
+  margin-top:22px;
+  height:30px;
+  width:30px;
+  border-radius: 50%;
+  background-color: green;
+  border: 1px solid black
+}
+.wifi-div-disconnected{
+  margin-top:22px;
+  height:30px;
+  width:30px;
+  border-radius: 50%;
+  background-color: #db7a69;
+  border: 1px solid black
+}
 
