@@ -1,0 +1,18 @@
+[
+	{
+		"pkg": "@capacitor/device",
+		"classpath": "com.capacitorjs.plugins.device.DevicePlugin"
+	},
+	{
+		"pkg": "@capacitor/geolocation",
+		"classpath": "com.capacitorjs.plugins.geolocation.GeolocationPlugin"
+	},
+	{
+		"pkg": "@capacitor/network",
+		"classpath": "com.capacitorjs.plugins.network.NetworkPlugin"
+	},
+	{
+		"pkg": "@capacitor/storage",
+		"classpath": "com.capacitorjs.plugins.storage.StoragePlugin"
+	}
+]

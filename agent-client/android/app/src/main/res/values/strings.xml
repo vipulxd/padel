@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">agent-client</string>
+    <string name="title_activity_main">agent-client</string>
+    <string name="package_name">com.padel.app</string>
+    <string name="custom_url_scheme">com.padel.app</string>
+</resources>
