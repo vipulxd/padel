@@ -10,6 +10,7 @@
 	backdrop-filter: blur(4px);
 	-webkit-backdrop-filter: blur(4px);
     height : 68px;
+    z-index: 99999 !important;
 }
 
 .navbar-icon-wrapper {

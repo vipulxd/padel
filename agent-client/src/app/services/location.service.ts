@@ -84,7 +84,7 @@ export class LocationService {
                             this.currentLocationInfo.lng
                         );
 
-                        if (distanceFromPrevious >= 60) {
+                        if (distanceFromPrevious >= 60 && pos.coords.accuracy < 40) {
                             this._api.sendLocationToServer(this.currentLocationInfo)
                             this.coordinates.emit(this.currentLocationInfo);
                             this.previousLocationInfo = this.currentLocationInfo;

@@ -1,4 +1,4 @@
-interface AUTHRESPONSE {
+export interface AUTHRESPONSE {
     admin_id: string
     agent_id:string
     createdat: string
@@ -8,13 +8,13 @@ interface AUTHRESPONSE {
     token: string
     username:string
 }
- interface LOCATIONINFO {
+ export interface LOCATIONINFO {
     lat: number,
     lng: number,
     createdAt: string,
     acc: number,
 }
- interface LOCATIONRESPONSE {
+export  interface LOCATIONRESPONSE {
     accuracy: number
     agent_id: number
     createdat: string
@@ -23,4 +23,3 @@ interface AUTHRESPONSE {
     longitude: number
 }
 
-export {AUTHRESPONSE, LOCATIONINFO, LOCATIONRESPONSE}
