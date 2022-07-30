@@ -28,6 +28,7 @@
     "@capacitor/network": "^1.0.7",
     "@capacitor/storage": "^1.2.5",
     "capacitor-suppress-longpress-gesture": "0.0.5",
+    "leaflet": "^1.8.0",
     "node-snackbar": "^0.1.16",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

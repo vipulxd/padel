@@ -3,14 +3,16 @@ enum AUTHAPI {
     register = '/api/agent/register'
 }
 enum locationApi {
-    location = '/api/agent/location',
+  location = '/api/agent/location',
   pickup = '/api/agent/assignments/',
   updateStatus = '/api/agent/task/'
 }
 enum pickupStatus {
     pending = 'PENDING',
-    inprogress = 'IN PROGRESS',
     completed = 'COMPLETED'
 }
+enum deviceInfo {
+  getDeviceInfo ='/api/agent/verifydeviceinfo/'
+}
 
-export {AUTHAPI,locationApi,pickupStatus}
+export {AUTHAPI,locationApi,pickupStatus,deviceInfo}

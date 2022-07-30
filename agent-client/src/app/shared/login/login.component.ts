@@ -8,7 +8,7 @@ import {Storage} from "@capacitor/storage";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent    {
-public isAuthenticated : boolean ;
+public isAuthenticated : boolean = true ;
 public isActive : boolean = false
 public errorString : string ;
 public token : string = localStorage.getItem('token')
@@ -22,12 +22,6 @@ public token : string = localStorage.getItem('token')
        this.isActive = false;
        this.errorString = val
    })
-    const { value } = await Storage.get({ key: 'token' });
-   if(this.token != null || value != null ){
-       this.isAuthenticated = true
-   }else {
-       this.isAuthenticated =  false;
-   }
 }
 public setActive(){
     this.isActive = true;

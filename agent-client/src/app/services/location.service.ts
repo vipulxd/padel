@@ -60,7 +60,7 @@ export class LocationService {
     };
     async getPosition() {
         this.logCurrentNetworkStatus();
-        this.isLoggedIn && await Geolocation.getCurrentPosition().then((pos) => {
+         await Geolocation.getCurrentPosition().then((pos) => {
             if (pos) {
                 this.currentLocationInfo = {
                     lat: pos.coords.latitude,
@@ -121,7 +121,7 @@ export class LocationService {
 
     public getCurrentLocation() {
         this.isLoading.emit(true);
-        this.isLoggedIn && Geolocation.getCurrentPosition()
+        Geolocation.getCurrentPosition()
             .then((pos) => {
 
                 this.currentLocationInfo = {
@@ -142,13 +142,6 @@ export class LocationService {
                 this.isLoading.emit(false);
                 return {lat: 0, lng: 0};
             });
-    }
-
-    public getLocationHistory() {
-        let id = 1;
-        this._api.getLocationFromServer(id).subscribe((val: LOCATIONRESPONSE[]) => {
-            this.logs.emit(val)
-        })
     }
 
     private static distance(lat1: number, lon1: number, lat2: number, lon2: number) {

@@ -1,6 +1,5 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {AuthenticationService} from "./services/authentication.service";
-import { Device } from '@capacitor/device';
 // Suppress the long press gesture inside the app
 import { SuppressLongpressGesture } from 'capacitor-suppress-longpress-gesture';
 import {ApiService} from "./services/api.service";
@@ -20,19 +19,8 @@ export class AppComponent implements OnInit{
               private _locationService : LocationService
               ) {
   }
-
-    public logDeviceInfo = async () => {
-        const info = await Device.getId();
-        console.log(info);
-    };
   ngOnInit(){
-
-this.logDeviceInfo()
-      if(this.token != null){
-          this._authservice.isAuthenticated.emit(true)
-      }else {
-          this._authservice.isAuthenticated.emit(false)
-      }
+    this._apiService.getDeviceInfo();
       this._apiService.show.subscribe(val =>{
           if(val){
               setTimeout(()=>{
